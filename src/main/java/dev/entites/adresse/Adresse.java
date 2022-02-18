@@ -1,17 +1,10 @@
-package dev.entites;
+package dev.entites.adresse;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Embeddable
 public class Adresse {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
 	@Column(name = "numero_rue")
 	private String numeroRue;
@@ -25,14 +18,6 @@ public class Adresse {
 
 	public Adresse() {
 		super();
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getNumeroRue() {
