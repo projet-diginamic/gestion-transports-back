@@ -12,7 +12,7 @@ public abstract class Reservation {
 
     private String statut;
 
-    private Collaborateur collaborateur;
+//    private Collaborateur collaborateur;
 
     public Integer getId() {
         return id;
@@ -22,5 +22,11 @@ public abstract class Reservation {
         this.id = id;
     }
 
+    public String getStatut() {
+        return statut;
+    }
 
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
 }

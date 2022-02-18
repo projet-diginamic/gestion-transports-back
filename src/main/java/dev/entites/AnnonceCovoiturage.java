@@ -1,9 +1,6 @@
 package dev.entites;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,11 +12,15 @@ public class AnnonceCovoiturage {
 
     private LocalDateTime dateHeureDepart;
 
+    @OneToOne
+    @JoinColumn(name="adresse_depart")
     private AdresseDepart adresseDepart;
 
+    @OneToOne
+    @JoinColumn(name="adresse_arrivee")
     private AdresseArrivee adresseArrivee;
 
-    private Integer nbPlaceDispo;
+    private Integer nbPlaces;
 
     public Integer getId() {
         return id;
@@ -53,11 +54,11 @@ public class AnnonceCovoiturage {
         this.adresseArrivee = adresseArrivee;
     }
 
-    public Integer getNbPlaceDispo() {
-        return nbPlaceDispo;
+    public Integer getNbPlaces() {
+        return nbPlaces;
     }
 
     public void setNbPlaceDispo(Integer nbPlaceDispo) {
-        this.nbPlaceDispo = nbPlaceDispo;
+        this.nbPlaces = nbPlaceDispo;
     }
 }

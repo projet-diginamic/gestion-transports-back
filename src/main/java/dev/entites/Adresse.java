@@ -5,13 +5,12 @@ import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Embeddable
-public class Adresse {
+public class Adresse implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+
 
 	@Column(name = "numero_rue")
 	private String numeroRue;
@@ -27,13 +26,6 @@ public class Adresse {
 		super();
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getNumeroRue() {
 		return numeroRue;
