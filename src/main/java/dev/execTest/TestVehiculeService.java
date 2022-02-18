@@ -3,12 +3,11 @@ package dev.execTest;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Controller;
 
 import dev.entites.VehiculeService;
 import dev.repositories.VehiculeServiceRepository;
 
-@Controller
+//@Controller
 public class TestVehiculeService implements CommandLineRunner {
 
 	private VehiculeServiceRepository vsr;
