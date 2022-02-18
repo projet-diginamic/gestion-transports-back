@@ -1,8 +1,14 @@
-package dev.entites;
+package dev.entites.adresse;
 
-import javax.persistence.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "adresse_arrivee")
 public class AdresseArrivee {
 
 	@Id
@@ -11,6 +17,10 @@ public class AdresseArrivee {
 
 	@Embedded
 	private Adresse adresse;
+
+	public AdresseArrivee() {
+		super();
+	}
 
 	public Integer getId() {
 		return id;
@@ -27,4 +37,5 @@ public class AdresseArrivee {
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
+
 }

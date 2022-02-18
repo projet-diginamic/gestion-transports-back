@@ -1,16 +1,11 @@
-package dev.entites;
+package dev.entites.adresse;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Embeddable
 public class Adresse implements Serializable {
-
-
 
 	@Column(name = "numero_rue")
 	private String numeroRue;
@@ -25,7 +20,6 @@ public class Adresse implements Serializable {
 	public Adresse() {
 		super();
 	}
-
 
 	public String getNumeroRue() {
 		return numeroRue;

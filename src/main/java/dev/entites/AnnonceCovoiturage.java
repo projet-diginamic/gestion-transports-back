@@ -1,5 +1,8 @@
 package dev.entites;
 
+import dev.entites.adresse.AdresseArrivee;
+import dev.entites.adresse.AdresseDepart;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
