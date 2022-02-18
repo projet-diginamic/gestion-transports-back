@@ -1,37 +1,35 @@
-package dev.entites;
+package dev.dto.vehiculeService;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+/*
+{
+         "id": 1,
+        "immatriculation": "PK-156-ML",
+        "marque": "Toyota",
+        "modele": "Yaris",
+        "statut": "En service",
+        "categorie": "Citadines polyvalentes",
+        "photo": "https://img-31.ccm2.net/oUzoumT47RAmihtpA_Gbxo4mAYA=/1240x/smart/dc46cec6193b4acd8570ebfa77adc2ce/ccmcms-hugo/10557729.gif"
+}
+ */
 
-@Entity
-@Table(name = "vehicule")
-public class VehiculeService {
+public class VehiculeServiceListeDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
 	private String immatriculation;
-
 	private String marque;
-
 	private String modele;
-
-	@Column(name = "nb_places")
-	private Integer nbPlaces;
-
-	private String statut;
-
 	private String categorie;
-
 	private String photo;
 
-	public VehiculeService() {
+	public VehiculeServiceListeDto(Integer id, String immatriculation, String marque, String modele, String categorie,
+			String photo) {
 		super();
+		this.id = id;
+		this.immatriculation = immatriculation;
+		this.marque = marque;
+		this.modele = modele;
+		this.categorie = categorie;
+		this.photo = photo;
 	}
 
 	public Integer getId() {
@@ -60,22 +58,6 @@ public class VehiculeService {
 
 	public void setModele(String modele) {
 		this.modele = modele;
-	}
-
-	public Integer getNbPlaces() {
-		return nbPlaces;
-	}
-
-	public void setNbPlaces(Integer nbPlaces) {
-		this.nbPlaces = nbPlaces;
-	}
-
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
 	}
 
 	public String getCategorie() {
