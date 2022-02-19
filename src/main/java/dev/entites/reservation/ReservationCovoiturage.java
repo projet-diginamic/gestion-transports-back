@@ -7,11 +7,8 @@ import javax.persistence.*;
 @Entity
 public class ReservationCovoiturage extends Reservation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
     @ManyToOne
+    @JoinColumn(name="id_covoiturage")
     private AnnonceCovoiturage annonceCovoiturage;
 
     public AnnonceCovoiturage getAnnonceCovoiturage() {
@@ -22,13 +19,4 @@ public class ReservationCovoiturage extends Reservation {
         this.annonceCovoiturage = annonceCovoiturage;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

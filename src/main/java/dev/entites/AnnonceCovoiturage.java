@@ -15,6 +15,10 @@ public class AnnonceCovoiturage {
 
     private LocalDateTime dateHeureDepart;
 
+    @ManyToOne
+    @JoinColumn(name="id_organisateur")
+    private Utilisateur organisateur;
+
     @OneToOne
     @JoinColumn(name="adresse_depart")
     private AdresseDepart adresseDepart;
@@ -22,6 +26,10 @@ public class AnnonceCovoiturage {
     @OneToOne
     @JoinColumn(name="adresse_arrivee")
     private AdresseArrivee adresseArrivee;
+
+    @ManyToOne
+    @JoinColumn(name="id_vehicule")
+    private VehiculeCovoiturage vehicule;
 
     private Integer nbPlaces;
 
@@ -61,7 +69,23 @@ public class AnnonceCovoiturage {
         return nbPlaces;
     }
 
-    public void setNbPlaceDispo(Integer nbPlaceDispo) {
-        this.nbPlaces = nbPlaceDispo;
+    public Utilisateur getOrganisateur() {
+        return organisateur;
+    }
+
+    public void setNbPlaces(Integer nbPlaces) {
+        this.nbPlaces = nbPlaces;
+    }
+
+    public void setOrganisateur(Utilisateur organisateur) {
+        this.organisateur = organisateur;
+    }
+
+    public VehiculeCovoiturage getVehicule() {
+        return vehicule;
+    }
+
+    public void setVehicule(VehiculeCovoiturage vehicule) {
+        this.vehicule = vehicule;
     }
 }

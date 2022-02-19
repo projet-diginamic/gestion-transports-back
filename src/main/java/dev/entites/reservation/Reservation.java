@@ -1,18 +1,22 @@
 package dev.entites.reservation;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import dev.entites.Collaborateur;
+import dev.entites.Utilisateur;
+import jdk.jshell.execution.Util;
 
+import javax.persistence.*;
+
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String statut;
-
-//    private Collaborateur collaborateur;
+    @ManyToOne
+    @JoinColumn(name="id_collaborateur")
+    private Utilisateur passager;
 
     public Integer getId() {
         return id;
@@ -22,11 +26,11 @@ public abstract class Reservation {
         this.id = id;
     }
 
-    public String getStatut() {
-        return statut;
+    public Utilisateur getPassager() {
+        return passager;
     }
 
-    public void setStatut(String statut) {
-        this.statut = statut;
+    public void setPassager(Utilisateur passager) {
+        this.passager = passager;
     }
 }

@@ -33,7 +33,7 @@ public class AnnonceCovoiturageController {
         }
     }
 
-    @PostMapping("publier")
+    @PostMapping
     public AnnonceCovoiturage publierAnnonce(@RequestBody AnnonceCovoiturage annonce){
         return this.covoiturageService.publierAnnonce(annonce);
     }
@@ -49,10 +49,11 @@ public class AnnonceCovoiturageController {
         }
     }
 
-    @PutMapping("modifier")
+    @PutMapping
     public ResponseEntity<?> modifierAnnonce(@RequestBody AnnonceCovoiturage annonce){
         try{
-            return ResponseEntity.ok(this.covoiturageService.modifierAnnonce(annonce));
+            this.covoiturageService.modifierAnnonce(annonce);
+            return ResponseEntity.ok().build();
         } catch(Exception e){
             return ResponseEntity.notFound().build();
         }
