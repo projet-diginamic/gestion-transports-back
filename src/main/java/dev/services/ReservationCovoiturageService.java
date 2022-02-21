@@ -1,7 +1,9 @@
 package dev.services;
 
-import dev.dto.CreerReservationCovoiturageDto;
-import dev.dto.ModifierReservationCovoiturageDto;
+import dev.dto.mappers.ListeReservationMapper;
+import dev.dto.mappers.ReservationDetailMapper;
+import dev.dto.reservation.covoiturage.*;
+import dev.dto.mappers.ReservationMapper;
 import dev.entites.AnnonceCovoiturage;
 import dev.entites.Utilisateur;
 import dev.entites.reservation.ReservationCovoiturage;
@@ -13,7 +15,9 @@ import dev.repositories.UtilisateurRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationCovoiturageService {
@@ -21,21 +25,21 @@ public class ReservationCovoiturageService {
     private ReservationCovoiturageRepository reservationCovoiturageRepository;
     private AnnonceCovoiturageRepository annonceCovoiturageRepository;
     private UtilisateurRepository utilisateurRepository;
+    private ReservationDetailMapper reservationMapper;
+    private ListeReservationMapper listeReservationMapper;
 
-    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, UtilisateurRepository utilisateurRepository) {
+    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, UtilisateurRepository utilisateurRepository, ReservationDetailMapper reservationMapper, ListeReservationMapper listeReservationMapper) {
         this.reservationCovoiturageRepository = reservationCovoiturageRepository;
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.reservationMapper = reservationMapper;
+        this.listeReservationMapper = listeReservationMapper;
     }
 
     private void verifierNbPlaces(AnnonceCovoiturage annonce) throws CovoiturageCompletException {
         if(annonce.getNbPlaces() <= this.reservationCovoiturageRepository.calculerNbPlacesReservees(annonce.getId())){
             throw new CovoiturageCompletException("Plus de places disponibles sur ce covoiturage");
         }
-    }
-
-    public List<ReservationCovoiturage> afficherReservationsParUtilisateur(Integer id_utilisateur) {
-        return this.reservationCovoiturageRepository.listerReservationsParUtilisateur(id_utilisateur);
     }
 
     public ReservationCovoiturage reserverCovoiturage(CreerReservationCovoiturageDto resa) throws NotFoundException {
@@ -79,12 +83,28 @@ public class ReservationCovoiturageService {
         return this.reservationCovoiturageRepository.save(resa);
     }
 
-    public ReservationCovoiturage afficherUneReservation(Integer id_resa) throws NotFoundException {
-        return this.reservationCovoiturageRepository.findById(id_resa)
-                .orElseThrow(NotFoundException::new);
+    public ReservationCovoiturageDetailDto afficherUneReservation(Integer id_resa) throws NotFoundException {
+        return this.reservationMapper.toReservationCovoiturageDetailDto(
+                this.reservationCovoiturageRepository.findById(id_resa)
+                .orElseThrow(NotFoundException::new));
     }
 
     public List<ReservationCovoiturage> listerToutesReservations(PageRequest pr) {
         return this.reservationCovoiturageRepository.findAll(pr).toList();
     }
+
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurAvenir(Integer id_utilisateur) {
+        return this.listeReservationMapper.map(this.reservationCovoiturageRepository
+                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartGreaterThanEqual(id_utilisateur, LocalDate.now().atStartOfDay()));
+    }
+
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurHisto(Integer id_utilisateur) {
+        return this.listeReservationMapper.map(this.reservationCovoiturageRepository
+                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartLessThan(id_utilisateur, LocalDate.now().atStartOfDay()));
+    }
+
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateur(Integer id_utilisateur) {
+        return this.listeReservationMapper.map(this.reservationCovoiturageRepository.listerReservationsParUtilisateur(id_utilisateur));
+    }
+
 }
