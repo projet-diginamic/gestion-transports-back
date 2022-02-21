@@ -8,6 +8,8 @@ import dev.repositories.ReservationCovoiturageRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,11 +49,23 @@ class AnnonceCovoiturageService {
     }
 
     public void modifierAnnonce(AnnonceCovoiturage nouv) throws CovoiturageCompletException {
-        this.annonceCovoiturageRepository.save(nouv);
         this.verifierNbPlaces(nouv);
+        this.annonceCovoiturageRepository.save(nouv);
     }
 
     public List<AnnonceCovoiturage> lister() {
         return this.annonceCovoiturageRepository.findAll();
+    }
+
+    public List<AnnonceCovoiturage> listerAnnoncesOrga(Integer id) {
+        return this.annonceCovoiturageRepository.findByOrganisateurId(id);
+    }
+
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaAvenir(Integer id) {
+        return this.annonceCovoiturageRepository.findByOrganisateurIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay());
+    }
+
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaHisto(Integer id) {
+        return this.annonceCovoiturageRepository.findByOrganisateurIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay());
     }
 }
