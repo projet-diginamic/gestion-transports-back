@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,9 +28,11 @@ public class VehiculeService {
 
 	private String statut;
 
-	private String categorie;
-
 	private String photo;
+
+	@ManyToOne
+	@JoinColumn(name = "id_categorie")
+	private Categorie categorie;
 
 	public VehiculeService() {
 		super();
@@ -78,20 +82,20 @@ public class VehiculeService {
 		this.statut = statut;
 	}
 
-	public String getCategorie() {
-		return categorie;
-	}
-
-	public void setCategorie(String categorie) {
-		this.categorie = categorie;
-	}
-
 	public String getPhoto() {
 		return photo;
 	}
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
 	}
 
 }
