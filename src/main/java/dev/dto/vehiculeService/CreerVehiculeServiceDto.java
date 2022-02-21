@@ -1,39 +1,32 @@
 package dev.dto.vehiculeService;
 
-/*
-{
-         "id": 1,
-        "immatriculation": "PK-156-ML",
-        "marque": "Toyota",
-        "modele": "Yaris",
-        "statut": "En service",
-        "categorie": "Citadines polyvalentes",
-        "photo": "https://img-31.ccm2.net/oUzoumT47RAmihtpA_Gbxo4mAYA=/1240x/smart/dc46cec6193b4acd8570ebfa77adc2ce/ccmcms-hugo/10557729.gif"
-}
- */
+//{
+//    "immatriculation": "BH-152-HG",
+//    "marque": "Jaguar",
+//    "modele": "Jag",
+//    "nbPlaces": 4,
+//    "photo": "photo",
+//    "categorie": 1
+//}
 
-public class VehiculeServiceListeDto {
+public class CreerVehiculeServiceDto {
 
-	private Integer id;
 	private String immatriculation;
 	private String marque;
 	private String modele;
+	private Integer nbPlaces;
 	private String photo;
-	private String categorie;
+	private Integer categorie;
 
-	public VehiculeServiceListeDto(Integer id, String immatriculation, String marque, String modele, String photo,
-			String categorie) {
+	public CreerVehiculeServiceDto(String immatriculation, String marque, String modele, Integer nbPlaces, String photo,
+			Integer categorie) {
 		super();
-		this.id = id;
 		this.immatriculation = immatriculation;
 		this.marque = marque;
 		this.modele = modele;
+		this.nbPlaces = nbPlaces;
 		this.photo = photo;
 		this.categorie = categorie;
-	}
-
-	public Integer getId() {
-		return id;
 	}
 
 	public String getImmatriculation() {
@@ -60,12 +53,12 @@ public class VehiculeServiceListeDto {
 		this.modele = modele;
 	}
 
-	public String getCategorie() {
-		return categorie;
+	public Integer getNbPlaces() {
+		return nbPlaces;
 	}
 
-	public void setCategorie(String categorie) {
-		this.categorie = categorie;
+	public void setNbPlaces(Integer nbPlaces) {
+		this.nbPlaces = nbPlaces;
 	}
 
 	public String getPhoto() {
@@ -74,6 +67,14 @@ public class VehiculeServiceListeDto {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public Integer getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Integer categorie) {
+		this.categorie = categorie;
 	}
 
 }
