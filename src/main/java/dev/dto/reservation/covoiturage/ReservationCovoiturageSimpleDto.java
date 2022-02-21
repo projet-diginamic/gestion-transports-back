@@ -1,4 +1,4 @@
-package dev.dto;
+package dev.dto.reservation.covoiturage;
 
 import dev.entites.adresse.AdresseArrivee;
 import dev.entites.adresse.AdresseDepart;

@@ -1,6 +1,6 @@
 package dev.dto.mappers;
 
-import dev.dto.ReservationCovoiturageSimpleDto;
+import dev.dto.reservation.covoiturage.ReservationCovoiturageSimpleDto;
 import dev.entites.reservation.ReservationCovoiturage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -8,8 +8,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
 
-    @Mapping(source="reservationCovoiturage.annonceCovoiturage.dateHeureDepart", target="dateHeureDepart")
-    @Mapping(source="reservationCovoiturage.annonceCovoiturage.adresseDepart", target="adresseDepart")
-    @Mapping(source="reservationCovoiturage.annonceCovoiturage.adresseArrivee", target="adresseArrivee")
-    ReservationCovoiturageSimpleDto toReservationCovoiturageSimpleDto(ReservationCovoiturage reservationCovoiturage);
+
+    @Mapping(source="resa.annonceCovoiturage.dateHeureDepart", target="dateHeureDepart")
+    @Mapping(source="resa.annonceCovoiturage.adresseDepart", target="adresseDepart")
+    @Mapping(source="resa.annonceCovoiturage.adresseArrivee", target="adresseArrivee")
+    ReservationCovoiturageSimpleDto toReservationCovoiturageSimpleDto(ReservationCovoiturage resa);
+
+
 }

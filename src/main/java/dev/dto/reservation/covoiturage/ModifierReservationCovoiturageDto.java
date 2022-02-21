@@ -1,4 +1,4 @@
-package dev.dto;
+package dev.dto.reservation.covoiturage;
 
 public class ModifierReservationCovoiturageDto {
 
