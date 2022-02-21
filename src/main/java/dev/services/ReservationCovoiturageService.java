@@ -5,17 +5,21 @@ import dev.dto.mappers.ReservationDetailMapper;
 import dev.dto.reservation.covoiturage.*;
 import dev.dto.mappers.ReservationMapper;
 import dev.entites.AnnonceCovoiturage;
+import dev.entites.Collaborateur;
 import dev.entites.Utilisateur;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.exception.CovoiturageCompletException;
+import dev.exception.DateDepasseeException;
 import dev.exception.NotFoundException;
 import dev.repositories.AnnonceCovoiturageRepository;
+import dev.repositories.CollaborateurRepository;
 import dev.repositories.ReservationCovoiturageRepository;
 import dev.repositories.UtilisateurRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +28,11 @@ public class ReservationCovoiturageService {
 
     private ReservationCovoiturageRepository reservationCovoiturageRepository;
     private AnnonceCovoiturageRepository annonceCovoiturageRepository;
-    private UtilisateurRepository utilisateurRepository;
+    private CollaborateurRepository utilisateurRepository;
     private ReservationDetailMapper reservationMapper;
     private ListeReservationMapper listeReservationMapper;
 
-    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, UtilisateurRepository utilisateurRepository, ReservationDetailMapper reservationMapper, ListeReservationMapper listeReservationMapper) {
+    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, CollaborateurRepository utilisateurRepository, ReservationDetailMapper reservationMapper, ListeReservationMapper listeReservationMapper) {
         this.reservationCovoiturageRepository = reservationCovoiturageRepository;
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
         this.utilisateurRepository = utilisateurRepository;
@@ -42,11 +46,21 @@ public class ReservationCovoiturageService {
         }
     }
 
+    private void verifierDate(Integer id) throws NotFoundException, DateDepasseeException{
+        if(this.reservationCovoiturageRepository.findById(id)
+                .orElseThrow(NotFoundException::new)
+                .getAnnonceCovoiturage()
+                .getDateHeureDepart()
+                .isBefore(LocalDateTime.now())){
+            throw new DateDepasseeException();
+        }
+    }
+
     public ReservationCovoiturage reserverCovoiturage(CreerReservationCovoiturageDto resa) throws NotFoundException {
         AnnonceCovoiturage annonce = this.annonceCovoiturageRepository
                 .findById(resa.getIdCovoiturage())
                 .orElseThrow(NotFoundException::new);
-        Utilisateur collab = this.utilisateurRepository
+        Collaborateur collab = this.utilisateurRepository
                 .findById(resa.getIdCollaborateur())
                 .orElseThrow(NotFoundException::new);
 
@@ -60,6 +74,7 @@ public class ReservationCovoiturageService {
     }
 
     public void supprimerReservationCovoiturage(Integer id_resa){
+        this.verifierDate(id_resa);
         this.reservationCovoiturageRepository.deleteById(id_resa);
     }
 
@@ -68,7 +83,7 @@ public class ReservationCovoiturageService {
                 .findById(nouvelleResa.getIdResa())
                 .orElseThrow(NotFoundException::new);
 
-        Utilisateur pax = this.utilisateurRepository
+        Collaborateur pax = this.utilisateurRepository
                         .findById(nouvelleResa.getIdPassager())
                                 .orElseThrow(NotFoundException::new);
 

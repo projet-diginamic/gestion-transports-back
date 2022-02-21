@@ -1,30 +1,27 @@
 package dev.dto.reservation.covoiturage;
 
-import dev.entites.adresse.AdresseArrivee;
-import dev.entites.adresse.AdresseDepart;
-
 import java.time.LocalDate;
 
 
 public class ReqCovoit {
 
-    private Integer adresseDepart;
-    private Integer adresseArrivee;
+    private String adresseDepart;
+    private String adresseArrivee;
     private LocalDate date;
 
-    public Integer getAdresseDepart() {
+    public String getAdresseDepart() {
         return adresseDepart;
     }
 
-    public void setAdresseDepart(Integer adresseDepart) {
+    public void setAdresseDepart(String adresseDepart) {
         this.adresseDepart = adresseDepart;
     }
 
-    public Integer getAdresseArrivee() {
+    public String getAdresseArrivee() {
         return adresseArrivee;
     }
 
-    public void setAdresseArrivee(Integer adresseArrivee) {
+    public void setAdresseArrivee(String adresseArrivee) {
         this.adresseArrivee = adresseArrivee;
     }
 
