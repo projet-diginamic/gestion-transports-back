@@ -1,5 +1,6 @@
 package dev.entites.reservation;
 
+import dev.entites.Collaborateur;
 import dev.entites.Utilisateur;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ public abstract class Reservation {
 
     @ManyToOne
     @JoinColumn(name="id_collaborateur")
-    private Utilisateur passager;
+    private Collaborateur passager;
 
     public Integer getId() {
         return id;
@@ -24,11 +25,11 @@ public abstract class Reservation {
         this.id = id;
     }
 
-    public Utilisateur getPassager() {
+    public Collaborateur getPassager() {
         return passager;
     }
 
-    public void setPassager(Utilisateur passager) {
+    public void setPassager(Collaborateur passager) {
         this.passager = passager;
     }
 }

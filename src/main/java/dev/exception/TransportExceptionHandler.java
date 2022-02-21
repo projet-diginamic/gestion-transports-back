@@ -17,4 +17,9 @@ public class TransportExceptionHandler {
         return ResponseEntity.notFound().header("info","entité introuvable").build();
     }
 
+    @ExceptionHandler(value = {DateDepasseeException.class})
+    public ResponseEntity<String> onDateDepasseeException(DateDepasseeException e){
+        return ResponseEntity.badRequest().header("info", "Date de départ dépassée").build();
+    }
+
 }

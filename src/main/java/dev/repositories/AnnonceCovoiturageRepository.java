@@ -1,9 +1,6 @@
 package dev.repositories;
 
-import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
-import dev.entites.adresse.AdresseArrivee;
-import dev.entites.adresse.AdresseDepart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,12 +18,15 @@ public interface AnnonceCovoiturageRepository extends JpaRepository<AnnonceCovoi
     List<AnnonceCovoiturage> findByOrganisateurIdAndDateHeureDepartLessThan(Integer id, LocalDateTime date);
 
     @Query(value =
-            "SELECT * FROM annonce_covoiturage WHERE"+
-            "(:date is NULL or :date = date(date_heure_depart))"+
-            "AND (:addrDep is NULL or adresse_depart = :addrDep)"+
-            "AND (:addrArr is NULL or adresse_arrivee = :addrArr)", nativeQuery = true)
+            "SELECT * FROM annonce_covoiturage "+
+                    "LEFT JOIN adresse_depart ON annonce_covoiturage.adresse_depart = adresse_depart.id "+
+                    "LEFT JOIN adresse_arrivee ON annonce_covoiturage.adresse_arrivee = adresse_arrivee.id "+
+                    "WHERE "+
+                    "(:date is NULL or :date = date(date_heure_depart)) "+
+                    "AND (:addrDep is NULL or adresse_depart.ville = :addrDep) "+
+                    "AND (:addrArr is NULL or adresse_arrivee.ville = :addrArr)", nativeQuery = true)
     List<AnnonceCovoiturage> rechercher(
-                                        @Param("addrDep") Integer a,
-                                        @Param("addrArr") Integer b,
+                                        @Param("addrDep") String a,
+                                        @Param("addrArr") String b,
                                         @Param("date") LocalDate c);
 }
