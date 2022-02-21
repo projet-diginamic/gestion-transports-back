@@ -72,6 +72,6 @@ public class VehiculeServiceService {
 	// 6. Filtrer les véhicules par immatriculation
 	// 6. Filtrer les véhicules par marque
 
-	// 7. Archiver un véhicule
+	// 7. Archiver un véhicule PUT ou PATCH ? paramètre en entrée ?
 
 }
