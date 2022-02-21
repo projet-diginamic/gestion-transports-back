@@ -1,8 +1,8 @@
 package dev.controllers;
 
-import dev.dto.CreerReservationCovoiturageDto;
-import dev.dto.ModifierReservationCovoiturageDto;
-import dev.dto.ReservationCovoiturageSimpleDto;
+import dev.dto.reservation.covoiturage.CreerReservationCovoiturageDto;
+import dev.dto.reservation.covoiturage.ModifierReservationCovoiturageDto;
+import dev.dto.reservation.covoiturage.ReservationCovoiturageSimpleDto;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.services.ReservationCovoiturageService;
 import org.springframework.data.domain.PageRequest;
