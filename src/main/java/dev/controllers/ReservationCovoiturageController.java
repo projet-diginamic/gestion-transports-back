@@ -51,7 +51,7 @@ public class ReservationCovoiturageController {
 
     @DeleteMapping("{id_resa}")
     public ResponseEntity<String> supprimerReservationCovoiturage(@PathVariable String id_resa){
-            this.covoiturageService.supprimerReservationCovoiturage(Integer.parseInt(id_resa));
+            this.covoiturageService.annulerReservationCovoiturage(Integer.parseInt(id_resa));
             return ResponseEntity.ok(id_resa);
     }
 

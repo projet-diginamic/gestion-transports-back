@@ -3,10 +3,8 @@ package dev.services;
 import dev.dto.mappers.ListeReservationMapper;
 import dev.dto.mappers.ReservationDetailMapper;
 import dev.dto.reservation.covoiturage.*;
-import dev.dto.mappers.ReservationMapper;
 import dev.entites.AnnonceCovoiturage;
 import dev.entites.Collaborateur;
-import dev.entites.Utilisateur;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.DateDepasseeException;
@@ -14,14 +12,13 @@ import dev.exception.NotFoundException;
 import dev.repositories.AnnonceCovoiturageRepository;
 import dev.repositories.CollaborateurRepository;
 import dev.repositories.ReservationCovoiturageRepository;
-import dev.repositories.UtilisateurRepository;
+import dev.utils.Email;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReservationCovoiturageService {
@@ -31,28 +28,20 @@ public class ReservationCovoiturageService {
     private CollaborateurRepository utilisateurRepository;
     private ReservationDetailMapper reservationMapper;
     private ListeReservationMapper listeReservationMapper;
+    private Email email;
 
-    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, CollaborateurRepository utilisateurRepository, ReservationDetailMapper reservationMapper, ListeReservationMapper listeReservationMapper) {
+    public ReservationCovoiturageService(ReservationCovoiturageRepository reservationCovoiturageRepository, AnnonceCovoiturageRepository annonceCovoiturageRepository, CollaborateurRepository utilisateurRepository, ReservationDetailMapper reservationMapper, ListeReservationMapper listeReservationMapper, Email email) {
         this.reservationCovoiturageRepository = reservationCovoiturageRepository;
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
         this.utilisateurRepository = utilisateurRepository;
         this.reservationMapper = reservationMapper;
         this.listeReservationMapper = listeReservationMapper;
+        this.email = email;
     }
 
     private void verifierNbPlaces(AnnonceCovoiturage annonce) throws CovoiturageCompletException {
         if(annonce.getNbPlaces() <= this.reservationCovoiturageRepository.calculerNbPlacesReservees(annonce.getId())){
             throw new CovoiturageCompletException("Plus de places disponibles sur ce covoiturage");
-        }
-    }
-
-    private void verifierDate(Integer id) throws NotFoundException, DateDepasseeException{
-        if(this.reservationCovoiturageRepository.findById(id)
-                .orElseThrow(NotFoundException::new)
-                .getAnnonceCovoiturage()
-                .getDateHeureDepart()
-                .isBefore(LocalDateTime.now())){
-            throw new DateDepasseeException();
         }
     }
 
@@ -73,9 +62,26 @@ public class ReservationCovoiturageService {
         return this.reservationCovoiturageRepository.save(nouvelleResa);
     }
 
-    public void supprimerReservationCovoiturage(Integer id_resa){
-        this.verifierDate(id_resa);
-        this.reservationCovoiturageRepository.deleteById(id_resa);
+    public void annulerReservationCovoiturage(Integer id_resa){
+        this.supprimerReservationCovoiturageId("Annulation à l'initiative du passager", id_resa);
+    }
+
+    public void supprimerReservationCovoiturageId(String raison, Integer id_resa) {
+        ReservationCovoiturage resa = this.reservationCovoiturageRepository.findById(id_resa)
+                .orElseThrow(NotFoundException::new);
+        this.supprimerReservationCovoiturageResa(raison, resa);
+    }
+
+    public void supprimerReservationCovoiturageResa(String raison, ReservationCovoiturage resa){
+        if(resa.getAnnonceCovoiturage()
+                .getDateHeureDepart()
+                .isBefore(LocalDateTime.now())) {
+            throw new DateDepasseeException();
+        }
+
+        this.reservationCovoiturageRepository.deleteById(resa.getId());
+
+        this.email.envoyerEmail(raison, resa);
     }
 
     public ReservationCovoiturage modifierReservationCovoiturage(ModifierReservationCovoiturageDto nouvelleResa) throws NotFoundException{

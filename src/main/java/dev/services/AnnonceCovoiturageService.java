@@ -3,6 +3,7 @@ package dev.services;
 import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
+import dev.exception.DateDepasseeException;
 import dev.exception.NotFoundException;
 import dev.repositories.AnnonceCovoiturageRepository;
 import dev.repositories.ReservationCovoiturageRepository;
@@ -19,11 +20,13 @@ class AnnonceCovoiturageService {
 
     private AnnonceCovoiturageRepository annonceCovoiturageRepository;
     private ReservationCovoiturageRepository reservationCovoiturageRepository;
+    private ReservationCovoiturageService reservationCovoiturageService;
 
-    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository, ReservationCovoiturageRepository reservationCovoiturageRepository){
+    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository, ReservationCovoiturageRepository reservationCovoiturageRepository, ReservationCovoiturageService reservationCovoiturageService){
         super();
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
         this.reservationCovoiturageRepository = reservationCovoiturageRepository;
+        this.reservationCovoiturageService = reservationCovoiturageService;
     }
 
     private void verifierNbPlaces(AnnonceCovoiturage annonce) throws CovoiturageCompletException {
@@ -45,7 +48,17 @@ class AnnonceCovoiturageService {
         return this.annonceCovoiturageRepository.save(annonce);
     }
 
-    public void supprimerCovoiturage (Integer id) {
+    public void supprimerCovoiturage (Integer id) throws NotFoundException, DateDepasseeException{
+        AnnonceCovoiturage annonce = this.annonceCovoiturageRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        if(annonce.getDateHeureDepart().isBefore(LocalDateTime.now())){
+            throw new DateDepasseeException();
+        }
+
+        annonce.getResas().forEach(x -> this.reservationCovoiturageService
+                .supprimerReservationCovoiturageResa("Annulation du covoiturage", x));
+
         this.annonceCovoiturageRepository.deleteById(id);
     }
 
