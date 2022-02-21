@@ -2,9 +2,11 @@ package dev.entites;
 
 import dev.entites.adresse.AdresseArrivee;
 import dev.entites.adresse.AdresseDepart;
+import dev.entites.reservation.ReservationCovoiturage;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class AnnonceCovoiturage {
@@ -30,6 +32,9 @@ public class AnnonceCovoiturage {
     @ManyToOne
     @JoinColumn(name="id_vehicule")
     private VehiculeCovoiturage vehicule;
+
+    @OneToMany(mappedBy = "annonceCovoiturage")
+    private List<ReservationCovoiturage> resas;
 
     private Integer nbPlaces;
 
@@ -87,5 +92,13 @@ public class AnnonceCovoiturage {
 
     public void setVehicule(VehiculeCovoiturage vehicule) {
         this.vehicule = vehicule;
+    }
+
+    public List<ReservationCovoiturage> getResas() {
+        return resas;
+    }
+
+    public void setResas(List<ReservationCovoiturage> resas) {
+        this.resas = resas;
     }
 }
