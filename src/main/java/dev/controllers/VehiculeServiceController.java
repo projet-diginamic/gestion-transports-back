@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
-import dev.entites.VehiculeService;
 import dev.services.VehiculeServiceService;
 
 @RestController
@@ -35,8 +34,8 @@ public class VehiculeServiceController {
 	}
 
 	@PostMapping
-	public VehiculeService creerVehiculeService(@RequestBody VehiculeService vehiculeService) {
-		return this.vehiculeServiceService.creerVehiculeService(vehiculeService);
+	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto vehiculeServiceDto) {
+		return this.vehiculeServiceService.creerVehiculeService(vehiculeServiceDto);
 	}
 
 	@PutMapping

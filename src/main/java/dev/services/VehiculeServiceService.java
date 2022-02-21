@@ -6,12 +6,15 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
+import dev.exception.NotFoundException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;
 
@@ -33,20 +36,29 @@ public class VehiculeServiceService {
 	}
 
 	@Transactional
-	public VehiculeService creerVehiculeService(CreerVehiculeServiceDto vehiculeServiceDto) {
+	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto vehiculeServiceDto) throws NotFoundException {
 		VehiculeService vehiculeService = new VehiculeService();
 
 		Optional<Categorie> optionalCategorie = categorieRepository.findById(vehiculeServiceDto.getCategorie());
 
-		if (optionalCategorie.isPresent()) {
-			vehiculeService.setCategorie(optionalCategorie.get());
-		} else {
-
-		}
-
+		vehiculeService.setImmatriculation(vehiculeServiceDto.getImmatriculation());
+		vehiculeService.setMarque(vehiculeServiceDto.getMarque());
+		vehiculeService.setModele(vehiculeServiceDto.getModele());
+		vehiculeService.setNbPlaces(vehiculeServiceDto.getNbPlaces());
+		vehiculeService.setPhoto(vehiculeServiceDto.getPhoto());
+		// règle métier : par défaut, un nouveau véhicule a le statut "en service"
 		vehiculeService.setStatut("En service");
 
-		return this.vehiculeServiceRepository.save(vehiculeService);
+		System.out.println(vehiculeServiceDto.getCategorie());
+
+		if (optionalCategorie.isPresent()) {
+			vehiculeService.setCategorie(optionalCategorie.get());
+			return ResponseEntity.ok(this.vehiculeServiceRepository.save(vehiculeService));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("La catégorie " + vehiculeServiceDto.getCategorie() + " n'existe pas.");
+		}
+
 	}
 
 //	@Transactional
