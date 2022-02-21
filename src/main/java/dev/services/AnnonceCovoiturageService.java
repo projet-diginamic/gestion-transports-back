@@ -1,7 +1,10 @@
 package dev.services;
 
 import dev.entites.AnnonceCovoiturage;
+import dev.exception.CovoiturageCompletException;
+import dev.exception.NotFoundException;
 import dev.repositories.AnnonceCovoiturageRepository;
+import dev.repositories.ReservationCovoiturageRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +15,27 @@ public
 class AnnonceCovoiturageService {
 
     private AnnonceCovoiturageRepository annonceCovoiturageRepository;
+    private ReservationCovoiturageRepository reservationCovoiturageRepository;
 
-    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository){
+    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository, ReservationCovoiturageRepository reservationCovoiturageRepository){
         super();
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
+        this.reservationCovoiturageRepository = reservationCovoiturageRepository;
+    }
+
+    private void verifierNbPlaces(AnnonceCovoiturage annonce) throws CovoiturageCompletException {
+        if(annonce.getNbPlaces() <= this.reservationCovoiturageRepository.calculerNbPlacesReservees(annonce.getId())){
+            throw new CovoiturageCompletException("Plus de places disponibles sur ce covoiturage");
+        }
     }
 
     public List<AnnonceCovoiturage> listerCovoiturages(PageRequest pr){
         return this.annonceCovoiturageRepository.findAll(pr).toList();
     }
 
-    public AnnonceCovoiturage recupererCovoiturage(Integer id) throws Exception{
+    public AnnonceCovoiturage recupererCovoiturage(Integer id) throws NotFoundException{
         return this.annonceCovoiturageRepository.findById(id)
-                .orElseThrow(Exception::new);
+                .orElseThrow(NotFoundException::new);
     }
 
     public AnnonceCovoiturage publierAnnonce(AnnonceCovoiturage annonce) {
@@ -35,12 +46,9 @@ class AnnonceCovoiturageService {
         this.annonceCovoiturageRepository.deleteById(id);
     }
 
-    public AnnonceCovoiturage modifierAnnonce(AnnonceCovoiturage annonce) throws Exception {
-        this.annonceCovoiturageRepository
-                .findById(annonce.getId())
-                .orElseThrow(Exception::new);
-        this.supprimerCovoiturage(annonce.getId());
-        return this.publierAnnonce(annonce);
+    public void modifierAnnonce(AnnonceCovoiturage nouv) throws CovoiturageCompletException {
+        this.annonceCovoiturageRepository.save(nouv);
+        this.verifierNbPlaces(nouv);
     }
 
     public List<AnnonceCovoiturage> lister() {

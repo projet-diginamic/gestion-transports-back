@@ -26,36 +26,24 @@ public class AnnonceCovoiturageController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> recupererAnnonce(@PathVariable String id){
-        try{
             return ResponseEntity.ok(this.covoiturageService.recupererCovoiturage(Integer.parseInt(id)));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @PostMapping("publier")
+    @PostMapping
     public AnnonceCovoiturage publierAnnonce(@RequestBody AnnonceCovoiturage annonce){
         return this.covoiturageService.publierAnnonce(annonce);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> supprimerAnnonce(@PathVariable String id){
-        try{
             this.covoiturageService.supprimerCovoiturage(Integer.parseInt(id));
             return ResponseEntity.ok().build();
-        }
-        catch(Exception e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
-    @PutMapping("modifier")
+    @PutMapping
     public ResponseEntity<?> modifierAnnonce(@RequestBody AnnonceCovoiturage annonce){
-        try{
-            return ResponseEntity.ok(this.covoiturageService.modifierAnnonce(annonce));
-        } catch(Exception e){
-            return ResponseEntity.notFound().build();
-        }
+            this.covoiturageService.modifierAnnonce(annonce);
+            return ResponseEntity.ok().build();
     }
 
 }
