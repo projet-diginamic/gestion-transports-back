@@ -25,6 +25,10 @@ public class Utilisateur {
 
 	private String password;
 
+	public Utilisateur() {
+
+	}
+
 	public String getNom() {
 		return nom;
 	}

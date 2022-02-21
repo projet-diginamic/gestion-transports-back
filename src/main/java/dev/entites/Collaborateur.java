@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 public class Collaborateur extends Utilisateur {
 	private Boolean isAdmin;
 
+	public Collaborateur() {
+
+	}
+
 	public Boolean getIsAdmin() {
 		return isAdmin;
 	}
