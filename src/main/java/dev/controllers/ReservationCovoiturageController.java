@@ -1,7 +1,8 @@
 package dev.controllers;
 
-import dev.dto.CreerReservationCovoiturageDto;
-import dev.dto.ModifierReservationCovoiturageDto;
+import dev.dto.reservation.covoiturage.CreerReservationCovoiturageDto;
+import dev.dto.reservation.covoiturage.ModifierReservationCovoiturageDto;
+import dev.dto.reservation.covoiturage.ReservationCovoiturageSimpleDto;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.services.ReservationCovoiturageService;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +27,18 @@ public class ReservationCovoiturageController {
     }
 
     @GetMapping("passager/{id_utilisateur}")
-    public List<ReservationCovoiturage> afficherReservations(@PathVariable String id_utilisateur){
+    public List<ReservationCovoiturageSimpleDto> afficherReservations(@PathVariable String id_utilisateur){
         return this.covoiturageService.afficherReservationsParUtilisateur(Integer.parseInt(id_utilisateur));
+    }
+
+    @GetMapping("passager-avenir/{id_utilisateur}")
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsAvenir(@PathVariable String id_utilisateur){
+        return this.covoiturageService.afficherReservationsParUtilisateurAvenir(Integer.parseInt(id_utilisateur));
+    }
+
+    @GetMapping("passager-histo/{id_utilisateur}")
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsHisto(@PathVariable String id_utilisateur){
+        return this.covoiturageService.afficherReservationsParUtilisateurHisto(Integer.parseInt(id_utilisateur));
     }
 
     @GetMapping("{id_resa}")
