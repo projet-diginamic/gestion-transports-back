@@ -1,8 +1,6 @@
 package dev.controllers;
 
-import dev.dto.reservation.covoiturage.CreerReservationCovoiturageDto;
-import dev.dto.reservation.covoiturage.ModifierReservationCovoiturageDto;
-import dev.dto.reservation.covoiturage.ReservationCovoiturageSimpleDto;
+import dev.dto.reservation.covoiturage.*;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.services.ReservationCovoiturageService;
 import org.springframework.data.domain.PageRequest;
@@ -42,23 +40,23 @@ public class ReservationCovoiturageController {
     }
 
     @GetMapping("{id_resa}")
-    public ResponseEntity<?> afficherUneReservation(@PathVariable String id_resa){
+    public ResponseEntity<ReservationCovoiturageDetailDto> afficherUneReservation(@PathVariable String id_resa){
             return ResponseEntity.ok(this.covoiturageService.afficherUneReservation(Integer.parseInt(id_resa)));
     }
 
     @PostMapping
-    public ResponseEntity<?> reserverCovoiturage(@RequestBody CreerReservationCovoiturageDto resa){
+    public ResponseEntity<ReservationCovoiturage> reserverCovoiturage(@RequestBody CreerReservationCovoiturageDto resa){
             return ResponseEntity.ok(this.covoiturageService.reserverCovoiturage(resa));
     }
 
     @DeleteMapping("{id_resa}")
-    public ResponseEntity<?> supprimerReservationCovoiturage(@PathVariable String id_resa){
+    public ResponseEntity supprimerReservationCovoiturage(@PathVariable String id_resa){
             this.covoiturageService.supprimerReservationCovoiturage(Integer.parseInt(id_resa));
             return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<?> modifierResa(@RequestBody ModifierReservationCovoiturageDto resa){
+    public ResponseEntity<ReservationCovoiturage> modifierResa(@RequestBody ModifierReservationCovoiturageDto resa){
             return ResponseEntity.ok(this.covoiturageService.modifierReservationCovoiturage(resa));
     }
 

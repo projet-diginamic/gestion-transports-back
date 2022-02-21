@@ -1,6 +1,8 @@
 package dev.controllers;
 
+import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
+import dev.entites.reservation.ReservationCovoiturage;
 import dev.services.AnnonceCovoiturageService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
@@ -21,12 +23,12 @@ public class AnnonceCovoiturageController {
     }
 
     @GetMapping
-    public List<AnnonceCovoiturage> listerCovoiturages(@RequestParam Integer start, @RequestParam Integer size){
-        return this.covoiturageService.listerCovoiturages(PageRequest.of(start,size));
+    public ResponseEntity<List<AnnonceCovoiturage>> listerCovoiturages(@RequestParam Integer start, @RequestParam Integer size){
+        return ResponseEntity.ok(this.covoiturageService.listerCovoiturages(PageRequest.of(start,size)));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> recupererAnnonce(@PathVariable String id){
+    public ResponseEntity<AnnonceCovoiturage> recupererAnnonce(@PathVariable String id){
             return ResponseEntity.ok(this.covoiturageService.recupererCovoiturage(Integer.parseInt(id)));
     }
 
@@ -46,20 +48,25 @@ public class AnnonceCovoiturageController {
     }
 
     @PostMapping
-    public AnnonceCovoiturage publierAnnonce(@RequestBody AnnonceCovoiturage annonce){
-        return this.covoiturageService.publierAnnonce(annonce);
+    public ResponseEntity<AnnonceCovoiturage> publierAnnonce(@RequestBody AnnonceCovoiturage annonce){
+        return ResponseEntity.ok(this.covoiturageService.publierAnnonce(annonce));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> supprimerAnnonce(@PathVariable String id){
+    public ResponseEntity supprimerAnnonce(@PathVariable String id){
             this.covoiturageService.supprimerCovoiturage(Integer.parseInt(id));
             return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<?> modifierAnnonce(@RequestBody AnnonceCovoiturage annonce){
+    public ResponseEntity modifierAnnonce(@RequestBody AnnonceCovoiturage annonce){
             this.covoiturageService.modifierAnnonce(annonce);
             return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("rechercher")
+    public ResponseEntity<List<AnnonceCovoiturage>> rechercherCovoit(@RequestBody ReqCovoit req){
+        return ResponseEntity.ok(this.covoiturageService.rechercher(req));
     }
 
 }
