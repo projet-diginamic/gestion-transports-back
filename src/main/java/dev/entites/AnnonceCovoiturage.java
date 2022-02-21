@@ -1,5 +1,6 @@
 package dev.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.entites.adresse.AdresseArrivee;
 import dev.entites.adresse.AdresseDepart;
 import dev.entites.reservation.ReservationCovoiturage;
@@ -34,6 +35,7 @@ public class AnnonceCovoiturage {
     private VehiculeCovoiturage vehicule;
 
     @OneToMany(mappedBy = "annonceCovoiturage")
+    @JsonIgnore
     private List<ReservationCovoiturage> resas;
 
     private Integer nbPlaces;

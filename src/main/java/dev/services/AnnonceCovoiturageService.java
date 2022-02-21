@@ -1,5 +1,6 @@
 package dev.services;
 
+import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.NotFoundException;
@@ -67,5 +68,9 @@ class AnnonceCovoiturageService {
 
     public List<AnnonceCovoiturage> listerAnnoncesOrgaHisto(Integer id) {
         return this.annonceCovoiturageRepository.findByOrganisateurIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay());
+    }
+
+    public List<AnnonceCovoiturage> rechercher(ReqCovoit req) {
+        return this.annonceCovoiturageRepository.rechercher(req.getAdresseDepart(), req.getAdresseArrivee(), req.getDate());
     }
 }
