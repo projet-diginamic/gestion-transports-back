@@ -13,7 +13,8 @@ import dev.entites.VehiculeService;
 @Repository
 public interface VehiculeServiceRepository extends JpaRepository<VehiculeService, Integer> {
 
-	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto(v.id, v.immatriculation, v.marque, v.modele, v.categorie, v.photo) from VehiculeService v")
+	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto(v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v "
+			+ "inner join v.categorie c ")
 	List<VehiculeServiceListeDto> listerVehicules(Pageable pageable);
 
 }

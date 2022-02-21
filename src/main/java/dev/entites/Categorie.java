@@ -14,7 +14,8 @@ public class Categorie {
 
 	private String nom;
 
-	public Categorie(Integer id, String nom) {
+	public Categorie() {
+
 	}
 
 	public Integer getId() {
