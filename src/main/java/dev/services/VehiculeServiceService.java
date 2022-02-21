@@ -61,10 +61,20 @@ public class VehiculeServiceService {
 
 	}
 
+//	envoyé par le front
+
+//	immatriculation
+//	marque
+//	modele
+//	libelleCategorieVehicule
+//	nbPlaces
+//	statutVehicule
+//	photoURL
+
 //	@Transactional
-//	public ResponseEntity<?> modifierVehiculeService(VehiculeService vehiculeService) throws NotFoundException {
-//		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
-//				.findById(vehiculeService.getId());
+//	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto vehiculeServiceDto) throws NotFoundException {
+//		Optional<VehiculeServiceDto> optionalVehiculeServiceDto = this.vehiculeServiceRepository
+//				.findById(vehiculeServiceDto.getId());
 //
 //		if (optionalVehiculeService.isPresent()) {
 //			// véhicule trouvé
