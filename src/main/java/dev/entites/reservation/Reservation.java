@@ -32,4 +32,8 @@ public abstract class Reservation {
     public void setPassager(Collaborateur passager) {
         this.passager = passager;
     }
+
+    public String toString(){
+        return "Ref n°"+this.id+"\nPassager : "+this.passager.getPrenom()+" "+this.passager.getNom();
+    }
 }

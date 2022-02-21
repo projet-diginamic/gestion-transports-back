@@ -19,4 +19,12 @@ public class ReservationCovoiturage extends Reservation {
         this.annonceCovoiturage = annonceCovoiturage;
     }
 
+    public String toString(){
+        return "Covoiturage ----------\n"
+                +super.toString()
+                +"\nDépart : "+this.annonceCovoiturage.getDateHeureDepart()
+                +"\nDe "+this.annonceCovoiturage.getAdresseDepart().getAdresse().getVille()
+                +" à "+this.annonceCovoiturage.getAdresseArrivee().getAdresse().getVille()
+                +"\n---------------------\n";
+    }
 }
