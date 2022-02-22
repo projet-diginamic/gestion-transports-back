@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
-import dev.exception.entites.adresse.AdresseDepart;
+import dev.entites.adresse.AdresseDepart;
 import dev.repositories.AdresseDepartRepository;
 
 @Controller

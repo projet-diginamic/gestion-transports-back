@@ -1,7 +1,7 @@
 package dev.services;
 
 import dev.dto.reservation.covoiturage.ReqCovoit;
-import dev.exception.entites.AnnonceCovoiturage;
+import dev.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.DateDepasseeException;
 import dev.exception.NotFoundException;

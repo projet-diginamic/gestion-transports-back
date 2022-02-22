@@ -1,6 +1,6 @@
 package dev.controllers;
 
-import dev.exception.entites.Collaborateur;
+import dev.entites.Collaborateur;
 import dev.services.CollaborateurService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

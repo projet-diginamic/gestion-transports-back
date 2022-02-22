@@ -1,33 +1,26 @@
-package dev.dto.reservation.covoiturage;
+package dev.dto;
 
-import dev.dto.UtilisateurDto;
+
+import dev.entites.Utilisateur;
+import dev.entites.VehiculeCovoiturage;
 import dev.entites.adresse.AdresseArrivee;
 import dev.entites.adresse.AdresseDepart;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class ReservationCovoiturageDetailDto {
-
-    private Integer id;
+public class AnnonceCovoiturageDto {
 
     private LocalDateTime dateHeureDepart;
 
-    private LocalDateTime dateHeureArrivee;
+    private Utilisateur organisateur;
 
     private AdresseDepart adresseDepart;
 
     private AdresseArrivee adresseArrivee;
 
-    private List<UtilisateurDto> passagers;
+    private VehiculeCovoiturage vehicule;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer nbPlaces;
 
     public LocalDateTime getDateHeureDepart() {
         return dateHeureDepart;
@@ -37,12 +30,12 @@ public class ReservationCovoiturageDetailDto {
         this.dateHeureDepart = dateHeureDepart;
     }
 
-    public LocalDateTime getDateHeureArrivee() {
-        return dateHeureArrivee;
+    public Utilisateur getOrganisateur() {
+        return organisateur;
     }
 
-    public void setDateHeureArrivee(LocalDateTime dateHeureArrivee) {
-        this.dateHeureArrivee = dateHeureArrivee;
+    public void setOrganisateur(Utilisateur organisateur) {
+        this.organisateur = organisateur;
     }
 
     public AdresseDepart getAdresseDepart() {
@@ -61,11 +54,19 @@ public class ReservationCovoiturageDetailDto {
         this.adresseArrivee = adresseArrivee;
     }
 
-    public List<UtilisateurDto> getPassagers() {
-        return passagers;
+    public VehiculeCovoiturage getVehicule() {
+        return vehicule;
     }
 
-    public void setPassagers(List<UtilisateurDto> passagers) {
-        this.passagers = passagers;
+    public void setVehicule(VehiculeCovoiturage vehicule) {
+        this.vehicule = vehicule;
+    }
+
+    public Integer getNbPlaces() {
+        return nbPlaces;
+    }
+
+    public void setNbPlaces(Integer nbPlaces) {
+        this.nbPlaces = nbPlaces;
     }
 }

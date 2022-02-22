@@ -1,6 +1,6 @@
-package dev.exception.entites.reservation;
+package dev.entites.reservation;
 
-import dev.exception.entites.Collaborateur;
+import dev.entites.Collaborateur;
 
 import javax.persistence.*;
 

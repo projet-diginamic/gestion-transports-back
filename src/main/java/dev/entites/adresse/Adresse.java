@@ -1,4 +1,4 @@
-package dev.exception.entites.adresse;
+package dev.entites.adresse;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

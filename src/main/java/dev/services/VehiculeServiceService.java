@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
-import dev.exception.entites.Categorie;
-import dev.exception.entites.VehiculeService;
+import dev.entites.Categorie;
+import dev.entites.VehiculeService;
 import dev.exception.NotFoundException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;

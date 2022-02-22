@@ -1,6 +1,6 @@
 package dev.services;
 
-import dev.exception.entites.Collaborateur;
+import dev.entites.Collaborateur;
 import dev.exception.NotFoundException;
 import dev.repositories.CollaborateurRepository;
 import org.springframework.stereotype.Service;
