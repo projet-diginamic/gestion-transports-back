@@ -1,7 +1,6 @@
 package dev.dto;
 
 
-import dev.entites.Utilisateur;
 import dev.entites.VehiculeCovoiturage;
 import dev.entites.adresse.AdresseArrivee;
 import dev.entites.adresse.AdresseDepart;
