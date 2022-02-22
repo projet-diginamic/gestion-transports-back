@@ -61,32 +61,24 @@ public class VehiculeServiceService {
 
 	}
 
-//	envoyé par le front
+	// paramètre d'entrée Id or not Id ?
 
-//	immatriculation
-//	marque
-//	modele
-//	libelleCategorieVehicule
-//	nbPlaces
-//	statutVehicule
-//	photoURL
+	@Transactional
+	public ResponseEntity<?> modifierVehiculeService(VehiculeService vehiculeService) throws NotFoundException {
+		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
+				.findById(vehiculeService.getId());
 
-//	@Transactional
-//	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto vehiculeServiceDto) throws NotFoundException {
-//		Optional<VehiculeServiceDto> optionalVehiculeServiceDto = this.vehiculeServiceRepository
-//				.findById(vehiculeServiceDto.getId());
-//
-//		if (optionalVehiculeService.isPresent()) {
-//			// véhicule trouvé
-//			this.vehiculeServiceRepository.save(vehiculeService);
-//			return ResponseEntity.ok(optionalVehiculeService.get());
-//		} else {
-//			// véhicule non trouvé
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//					.body("Le véhicule immatriculé " + vehiculeService.getImmatriculation() + " n'existe pas.");
-//		}
-//
-//	}
+		if (optionalVehiculeService.isPresent()) {
+			// véhicule trouvé
+			this.vehiculeServiceRepository.save(vehiculeService);
+			return ResponseEntity.ok(optionalVehiculeService.get());
+		} else {
+			// véhicule non trouvé
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("Le véhicule immatriculé " + vehiculeService.getImmatriculation() + " n'existe pas.");
+		}
+
+	}
 
 	// 4. Liste catégorie véhicule
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
