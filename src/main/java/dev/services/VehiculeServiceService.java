@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import dev.dto.vehiculeService.VehiculeServiceDto;
+import dev.dto.vehiculeService.CreerVehiculeServiceDto;
+import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
@@ -36,58 +37,67 @@ public class VehiculeServiceService {
 	}
 
 	@Transactional
-	public ResponseEntity<?> creerVehiculeService(VehiculeServiceDto vehiculeServiceDto) throws NotFoundException {
+	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto creerVehiculeServiceDto)
+			throws NotFoundException {
 		VehiculeService vehiculeService = new VehiculeService();
 
-		Optional<Categorie> optionalCategorie = categorieRepository.findById(vehiculeServiceDto.getCategorie());
+		Optional<Categorie> optionalCategorie = categorieRepository.findById(creerVehiculeServiceDto.getCategorie());
 
-		vehiculeService.setImmatriculation(vehiculeServiceDto.getImmatriculation());
-		vehiculeService.setMarque(vehiculeServiceDto.getMarque());
-		vehiculeService.setModele(vehiculeServiceDto.getModele());
-		vehiculeService.setNbPlaces(vehiculeServiceDto.getNbPlaces());
-		vehiculeService.setPhoto(vehiculeServiceDto.getPhoto());
+		vehiculeService.setImmatriculation(creerVehiculeServiceDto.getImmatriculation());
+		vehiculeService.setMarque(creerVehiculeServiceDto.getMarque());
+		vehiculeService.setModele(creerVehiculeServiceDto.getModele());
+		vehiculeService.setNbPlaces(creerVehiculeServiceDto.getNbPlaces());
+		vehiculeService.setPhoto(creerVehiculeServiceDto.getPhoto());
 		// règle métier : par défaut, un nouveau véhicule a le statut "en service"
 		vehiculeService.setStatut("En service");
 
-		System.out.println(vehiculeServiceDto.getCategorie());
+		System.out.println(creerVehiculeServiceDto.getCategorie());
 
 		if (optionalCategorie.isPresent()) {
 			vehiculeService.setCategorie(optionalCategorie.get());
 			return ResponseEntity.ok(this.vehiculeServiceRepository.save(vehiculeService));
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("La catégorie " + vehiculeServiceDto.getCategorie() + " n'existe pas.");
+					.body("La catégorie " + creerVehiculeServiceDto.getCategorie() + " n'existe pas.");
 		}
 
 	}
 
 	@Transactional
-	public ResponseEntity<?> modifierVehiculeService(VehiculeServiceDto vehiculeServiceDto) throws NotFoundException {
+	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
+			throws NotFoundException {
+		System.out.println("dans la méthode modifierVehiculeService");
+
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
-				.findById(vehiculeServiceDto.getId());
+				.findById(modifierVehiculeServiceDto.getId());
 		VehiculeService vehiculeService = optionalVehiculeService.get();
 
-		Optional<Categorie> optionalCategorie = categorieRepository.findById(vehiculeServiceDto.getCategorie());
-
+		if (modifierVehiculeServiceDto.getCategorie() == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
+		}
+		Optional<Categorie> optionalCategorie = categorieRepository.findById(modifierVehiculeServiceDto.getCategorie());
+		System.out.println(modifierVehiculeServiceDto);
 		if (optionalVehiculeService.isPresent()) {
+
 			// véhicule trouvé
 
 			if (optionalCategorie.isPresent()) {
 
 				vehiculeService.setCategorie(optionalCategorie.get());
-				vehiculeService.setImmatriculation(vehiculeServiceDto.getImmatriculation());
-				vehiculeService.setMarque(vehiculeServiceDto.getMarque());
-				vehiculeService.setModele(vehiculeServiceDto.getModele());
-				vehiculeService.setNbPlaces(vehiculeServiceDto.getNbPlaces());
-				vehiculeService.setPhoto(vehiculeServiceDto.getPhoto());
-				vehiculeService.setStatut(vehiculeServiceDto.getStatut());
+				vehiculeService.setImmatriculation(modifierVehiculeServiceDto.getImmatriculation());
+				vehiculeService.setMarque(modifierVehiculeServiceDto.getMarque());
+				vehiculeService.setModele(modifierVehiculeServiceDto.getModele());
+				vehiculeService.setNbPlaces(modifierVehiculeServiceDto.getNbPlaces());
+				vehiculeService.setPhoto(modifierVehiculeServiceDto.getPhoto());
+				vehiculeService.setStatut(modifierVehiculeServiceDto.getStatut());
 
 				this.vehiculeServiceRepository.save(vehiculeService);
 				return ResponseEntity.ok(vehiculeService);
 
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body("La catégorie " + vehiculeServiceDto.getCategorie() + " n'existe pas.");
+						.body("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
 			}
 
 		} else {

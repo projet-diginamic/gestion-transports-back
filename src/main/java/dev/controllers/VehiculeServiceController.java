@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.dto.vehiculeService.VehiculeServiceDto;
+import dev.dto.vehiculeService.CreerVehiculeServiceDto;
+import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
-import dev.entites.VehiculeService;
 import dev.exception.NotFoundException;
 import dev.services.VehiculeServiceService;
 
@@ -36,14 +36,14 @@ public class VehiculeServiceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> creerVehiculeService(@RequestBody VehiculeServiceDto vehiculeServiceDto) {
-		return this.vehiculeServiceService.creerVehiculeService(vehiculeServiceDto);
+	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto) {
+		return this.vehiculeServiceService.creerVehiculeService(creerVehiculeServiceDto);
 	}
 
 	@PutMapping
-	public ResponseEntity<?> modifierVehiculeService(@RequestBody VehiculeService vehiculeService)
+	public ResponseEntity<?> modifierVehiculeService(@RequestBody ModifierVehiculeServiceDto modifierVehiculeServiceDto)
 			throws NotFoundException {
-		return ResponseEntity.ok(this.vehiculeServiceService.modifierVehiculeService(vehiculeService));
+		return ResponseEntity.ok(this.vehiculeServiceService.modifierVehiculeService(modifierVehiculeServiceDto));
 	}
 
 }

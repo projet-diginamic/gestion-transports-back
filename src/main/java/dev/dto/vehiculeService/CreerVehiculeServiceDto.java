@@ -1,26 +1,22 @@
 package dev.dto.vehiculeService;
 
-//{
-//    "immatriculation": "BH-152-HG",
-//    "marque": "Jaguar",
-//    "modele": "Jag",
-//    "nbPlaces": 4,
-//    "photo": "photo",
-//    "categorie": 1
-//}
+//"immatriculation":"BZ-123-KL",
+//"marque":"tata motors",
+//"modele":"pot de yaourt",
+//"nbPlaces":0,
+//"photo":"url de ma photo",
+//"categorie":5
 
-public class VehiculeServiceDto {
+public class CreerVehiculeServiceDto {
 
-	private Integer id;
 	private String immatriculation;
 	private String marque;
 	private String modele;
 	private Integer nbPlaces;
 	private String photo;
-	private String statut;
 	private Integer categorie;
 
-	public VehiculeServiceDto(String immatriculation, String marque, String modele, Integer nbPlaces, String photo,
+	public CreerVehiculeServiceDto(String immatriculation, String marque, String modele, Integer nbPlaces, String photo,
 			Integer categorie) {
 		super();
 		this.immatriculation = immatriculation;
@@ -29,23 +25,6 @@ public class VehiculeServiceDto {
 		this.nbPlaces = nbPlaces;
 		this.photo = photo;
 		this.categorie = categorie;
-	}
-
-	public VehiculeServiceDto(Integer id, String immatriculation, String marque, String modele, Integer nbPlaces,
-			String photo, String statut, Integer categorie) {
-		super();
-		this.id = id;
-		this.immatriculation = immatriculation;
-		this.marque = marque;
-		this.modele = modele;
-		this.nbPlaces = nbPlaces;
-		this.photo = photo;
-		this.statut = statut;
-		this.categorie = categorie;
-	}
-
-	public Integer getId() {
-		return id;
 	}
 
 	public String getImmatriculation() {
@@ -86,14 +65,6 @@ public class VehiculeServiceDto {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
-	}
-
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
 	}
 
 	public Integer getCategorie() {
