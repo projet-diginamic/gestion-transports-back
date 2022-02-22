@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,11 @@ public class VehiculeServiceController {
 	public ResponseEntity<?> modifierVehiculeService(@RequestBody ModifierVehiculeServiceDto modifierVehiculeServiceDto)
 			throws NotFoundException {
 		return ResponseEntity.ok(this.vehiculeServiceService.modifierVehiculeService(modifierVehiculeServiceDto));
+	}
+
+	@PutMapping("/archiver/{id}")
+	public ResponseEntity<?> archiverVehiculeService(@PathVariable Integer id) throws NotFoundException {
+		return ResponseEntity.ok(this.vehiculeServiceService.archiverVehiculeService(id));
 	}
 
 }
