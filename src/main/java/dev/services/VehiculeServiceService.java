@@ -124,11 +124,15 @@ public class VehiculeServiceService {
 		}
 
 	}
-	// 4. Liste catégorie véhicule
 
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
 
-	// 6. Filtrer les véhicules par immatriculation
-	// 6. Filtrer les véhicules par marque
+	public List<VehiculeServiceListeDto> vehiculeParMarque(String marque) {
+		return this.vehiculeServiceRepository.rechercherParMarque(marque);
+	}
+
+	public Optional<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) {
+		return this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation);
+	}
 
 }

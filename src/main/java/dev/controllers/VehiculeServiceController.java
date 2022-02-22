@@ -1,6 +1,7 @@
 package dev.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,17 @@ public class VehiculeServiceController {
 	@PutMapping("/archiver/{id}")
 	public ResponseEntity<?> archiverVehiculeService(@PathVariable Integer id) throws NotFoundException {
 		return ResponseEntity.ok(this.vehiculeServiceService.archiverVehiculeService(id));
+	}
+
+	@GetMapping("/marque/{marque}")
+	public List<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) {
+		return this.vehiculeServiceService.vehiculeParMarque(marque);
+	}
+
+	@GetMapping("/immatriculation/{immatriculation}")
+	public Optional<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(
+			@PathVariable String immatriculation) {
+		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
 
 }
