@@ -51,8 +51,6 @@ public class VehiculeServiceService {
 		// règle métier : par défaut, un nouveau véhicule a le statut "en service"
 		vehiculeService.setStatut("En service");
 
-		System.out.println(creerVehiculeServiceDto.getCategorie());
-
 		if (optionalCategorie.isPresent()) {
 			vehiculeService.setCategorie(optionalCategorie.get());
 			return ResponseEntity.ok(this.vehiculeServiceRepository.save(vehiculeService));
@@ -66,7 +64,6 @@ public class VehiculeServiceService {
 	@Transactional
 	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
 			throws NotFoundException {
-		System.out.println("dans la méthode modifierVehiculeService");
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
 				.findById(modifierVehiculeServiceDto.getId());
@@ -77,7 +74,7 @@ public class VehiculeServiceService {
 					.body("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
 		}
 		Optional<Categorie> optionalCategorie = categorieRepository.findById(modifierVehiculeServiceDto.getCategorie());
-		System.out.println(modifierVehiculeServiceDto);
+
 		if (optionalVehiculeService.isPresent()) {
 
 			// véhicule trouvé
@@ -108,12 +105,29 @@ public class VehiculeServiceService {
 
 	}
 
+	@Transactional
+	public ResponseEntity<?> archiverVehiculeService(Integer id) throws NotFoundException {
+
+		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
+
+		if (optionalVehiculeService.isPresent()) {
+			// véhicule trouvé
+			VehiculeService vehiculeService = optionalVehiculeService.get();
+			vehiculeService.setStatut("hors-service");
+
+			this.vehiculeServiceRepository.save(vehiculeService);
+			return ResponseEntity.ok("véhicule " + vehiculeService.getImmatriculation() + " archivé");
+
+		} else {
+			// véhicule non trouvé
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("véhicule non trouvé");
+		}
+
+	}
 	// 4. Liste catégorie véhicule
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
 
 	// 6. Filtrer les véhicules par immatriculation
 	// 6. Filtrer les véhicules par marque
-
-	// 7. Archiver un véhicule PUT ou PATCH ? paramètre en entrée ?
 
 }
