@@ -1,6 +1,6 @@
-package dev.exception.entites.reservation;
+package dev.entites.reservation;
 
-import dev.exception.entites.AnnonceCovoiturage;
+import dev.entites.AnnonceCovoiturage;
 
 import javax.persistence.*;
 

@@ -1,7 +1,7 @@
 package dev.dto.mappers;
 
 import dev.dto.reservation.covoiturage.ReservationCovoiturageDetailDto;
-import dev.exception.entites.reservation.ReservationCovoiturage;
+import dev.entites.reservation.ReservationCovoiturage;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

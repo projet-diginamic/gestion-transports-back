@@ -1,6 +1,6 @@
 package dev.utils;
 
-import dev.exception.entites.reservation.Reservation;
+import dev.entites.reservation.Reservation;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;

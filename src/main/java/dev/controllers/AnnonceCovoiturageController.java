@@ -1,7 +1,7 @@
 package dev.controllers;
 
 import dev.dto.reservation.covoiturage.ReqCovoit;
-import dev.exception.entites.AnnonceCovoiturage;
+import dev.entites.AnnonceCovoiturage;
 import dev.services.AnnonceCovoiturageService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;

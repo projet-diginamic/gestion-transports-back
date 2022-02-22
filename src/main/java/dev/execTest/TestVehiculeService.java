@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 
-import dev.exception.entites.VehiculeService;
+import dev.entites.VehiculeService;
 import dev.repositories.VehiculeServiceRepository;
 
 //@Controller

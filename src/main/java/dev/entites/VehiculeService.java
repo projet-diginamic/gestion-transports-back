@@ -1,4 +1,4 @@
-package dev.exception.entites;
+package dev.entites;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

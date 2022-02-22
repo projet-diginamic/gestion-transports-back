@@ -1,9 +1,9 @@
-package dev.exception.entites;
+package dev.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import dev.exception.entites.adresse.AdresseArrivee;
-import dev.exception.entites.adresse.AdresseDepart;
-import dev.exception.entites.reservation.ReservationCovoiturage;
+import dev.entites.adresse.AdresseArrivee;
+import dev.entites.reservation.ReservationCovoiturage;
+import dev.entites.adresse.AdresseDepart;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package dev.exception.entites.adresse;
+package dev.entites.adresse;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "adresse_depart")
-public class AdresseDepart {
+@Table(name = "adresse_arrivee")
+public class AdresseArrivee {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class AdresseDepart {
 	@Embedded
 	private Adresse adresse;
 
-	public AdresseDepart() {
+	public AdresseArrivee() {
 		super();
 	}
 
