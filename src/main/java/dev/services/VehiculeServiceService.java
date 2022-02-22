@@ -127,7 +127,6 @@ public class VehiculeServiceService {
 
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
 
-
 	public ResponseEntity<?> detailVehiculeService(Integer id) throws NotFoundException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
@@ -143,6 +142,7 @@ public class VehiculeServiceService {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("véhicule non trouvé");
 		}
 
+	}
 
 	public List<VehiculeServiceListeDto> vehiculeParMarque(String marque) {
 		return this.vehiculeServiceRepository.rechercherParMarque(marque);
