@@ -1,6 +1,6 @@
 package dev.controllers;
 
-import dev.entites.Collaborateur;
+import dev.exception.entites.Collaborateur;
 import dev.services.CollaborateurService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +23,10 @@ public class CollaborateurController {
     @GetMapping("{id}")
     public ResponseEntity<Collaborateur> afficherUtilisateur(@PathVariable String id){
         return ResponseEntity.ok(this.service.afficherUtilisateur(Integer.parseInt(id)));
+    }
+
+    @GetMapping("/is-admin/{id}")
+    public ResponseEntity<Boolean> isAdmin(@PathVariable String id){
+        return ResponseEntity.ok(this.service.isAdmin(Integer.parseInt(id)));
     }
 }

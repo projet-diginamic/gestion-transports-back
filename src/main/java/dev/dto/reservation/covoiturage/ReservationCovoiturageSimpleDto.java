@@ -1,7 +1,7 @@
 package dev.dto.reservation.covoiturage;
 
-import dev.entites.adresse.AdresseArrivee;
-import dev.entites.adresse.AdresseDepart;
+import dev.exception.entites.adresse.AdresseArrivee;
+import dev.exception.entites.adresse.AdresseDepart;
 
 import java.time.LocalDateTime;
 

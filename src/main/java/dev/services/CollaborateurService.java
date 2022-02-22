@@ -1,6 +1,6 @@
 package dev.services;
 
-import dev.entites.Collaborateur;
+import dev.exception.entites.Collaborateur;
 import dev.exception.NotFoundException;
 import dev.repositories.CollaborateurRepository;
 import org.springframework.stereotype.Service;
@@ -22,5 +22,11 @@ public class CollaborateurService {
     public Collaborateur afficherUtilisateur(Integer id) {
         return this.utilisateurRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
+    }
+
+    public boolean isAdmin(Integer id) {
+        return this.utilisateurRepository.findById(id)
+                .orElseThrow(NotFoundException::new)
+                .getIsAdmin();
     }
 }

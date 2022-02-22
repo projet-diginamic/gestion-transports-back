@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
-import dev.entites.VehiculeService;
+import dev.exception.entites.VehiculeService;
 
 @Repository
 public interface VehiculeServiceRepository extends JpaRepository<VehiculeService, Integer> {

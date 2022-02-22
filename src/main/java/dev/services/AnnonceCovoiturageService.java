@@ -1,7 +1,7 @@
 package dev.services;
 
 import dev.dto.reservation.covoiturage.ReqCovoit;
-import dev.entites.AnnonceCovoiturage;
+import dev.exception.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.DateDepasseeException;
 import dev.exception.NotFoundException;
@@ -48,7 +48,7 @@ class AnnonceCovoiturageService {
         return this.annonceCovoiturageRepository.save(annonce);
     }
 
-    public void supprimerCovoiturage (Integer id) throws NotFoundException, DateDepasseeException{
+    public AnnonceCovoiturage supprimerCovoiturage (Integer id) throws NotFoundException, DateDepasseeException{
         AnnonceCovoiturage annonce = this.annonceCovoiturageRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
 
@@ -60,6 +60,7 @@ class AnnonceCovoiturageService {
                 .supprimerReservationCovoiturageResa("Annulation du covoiturage", x));
 
         this.annonceCovoiturageRepository.deleteById(id);
+        return annonce;
     }
 
     public void modifierAnnonce(AnnonceCovoiturage nouv) throws CovoiturageCompletException {

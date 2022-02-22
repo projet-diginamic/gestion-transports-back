@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class TransportExceptionHandler {
 
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<String> onException(Exception e){
+        return ResponseEntity.badRequest().header("info", "Erreur inattendue - requête rejetée").build();
+    }
+
     @ExceptionHandler(value = {CovoiturageCompletException.class})
     public ResponseEntity<String> onCovoiturageCompletException(CovoiturageCompletException e){
         return ResponseEntity.badRequest().header("info", e.getMessage()).build();

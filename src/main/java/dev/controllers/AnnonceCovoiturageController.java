@@ -1,11 +1,9 @@
 package dev.controllers;
 
 import dev.dto.reservation.covoiturage.ReqCovoit;
-import dev.entites.AnnonceCovoiturage;
-import dev.entites.reservation.ReservationCovoiturage;
+import dev.exception.entites.AnnonceCovoiturage;
 import dev.services.AnnonceCovoiturageService;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +52,7 @@ public class AnnonceCovoiturageController {
 
     @DeleteMapping("{id}")
     public ResponseEntity supprimerAnnonce(@PathVariable String id){
-            this.covoiturageService.supprimerCovoiturage(Integer.parseInt(id));
-            return ResponseEntity.ok().build();
+        return ResponseEntity.ok(this.covoiturageService.supprimerCovoiturage(Integer.parseInt(id)));
     }
 
     @PutMapping
