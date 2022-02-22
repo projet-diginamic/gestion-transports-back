@@ -53,6 +53,12 @@ public class VehiculeServiceController {
 		return ResponseEntity.ok(this.vehiculeServiceService.archiverVehiculeService(id));
 	}
 
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> detailVehiculeService(@PathVariable Integer id) throws NotFoundException {
+		return ResponseEntity.ok(this.vehiculeServiceService.detailVehiculeService(id));
+	};
+
 	@GetMapping("/marque/{marque}")
 	public List<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) {
 		return this.vehiculeServiceService.vehiculeParMarque(marque);
@@ -63,5 +69,6 @@ public class VehiculeServiceController {
 			@PathVariable String immatriculation) {
 		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
+
 
 }
