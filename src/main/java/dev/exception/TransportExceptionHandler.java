@@ -1,6 +1,7 @@
 package dev.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -10,6 +11,11 @@ public class TransportExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<String> onException(Exception e){
         return ResponseEntity.badRequest().header("info", "Erreur inattendue - requête rejetée").build();
+    }
+
+    @ExceptionHandler(value =  {MailAuthenticationException.class})
+    public ResponseEntity<String> onMailAuthenticationException(MailAuthenticationException e){
+        return ResponseEntity.internalServerError().header("info","Erreur : Email d'annulation non envoyé").build();
     }
 
     @ExceptionHandler(value = {CovoiturageCompletException.class})
