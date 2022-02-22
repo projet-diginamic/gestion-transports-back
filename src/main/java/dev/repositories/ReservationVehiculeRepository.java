@@ -17,5 +17,9 @@ public interface ReservationVehiculeRepository extends JpaRepository<Reservation
 
     List<ReservationVehicule> findByPassagerIdAndDateHeureDepartLessThan(Integer id, LocalDateTime d);
 
+    List<ReservationVehicule> findByChauffeurId(Integer id);
+
+    List<ReservationVehicule> findByVehiculeId(Integer id);
+
 
 }

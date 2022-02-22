@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.dto.reservation.vehicule.AccepterMissionDto;
 import dev.dto.reservation.vehicule.ReservationVehiculeDto;
 import dev.entites.reservation.ReservationVehicule;
 import dev.services.ReservationVehiculeService;
@@ -97,6 +98,31 @@ public class ReservationVehiculeController {
     @PutMapping
     public ResponseEntity<ReservationVehicule> modifier(@RequestBody ReservationVehicule resa){
         return ResponseEntity.ok(this.service.modifier(resa));
+    }
+
+    /**
+     * Renvoie toutes les résas concernant un chauffeur
+     * @param id
+     * @return
+     */
+    @GetMapping("/chauffeur/{id}")
+    public ResponseEntity<List<ReservationVehicule>> listerChauffeur(@PathVariable String id){
+        return ResponseEntity.ok(this.service.listerChauffeur(Integer.parseInt(id)));
+    }
+
+    /**
+     * Renvoie toutes les résas concernant un véhicule de service
+     * @param id
+     * @return
+     */
+    @GetMapping("/vehicule/{id}")
+    public ResponseEntity<List<ReservationVehicule>> listerVehicule(@PathVariable String id) {
+        return ResponseEntity.ok(this.service.listerVehicule(Integer.parseInt(id)));
+    }
+
+    @PostMapping("/accepter-mission")
+    public ResponseEntity<ReservationVehicule> accepter(@RequestBody AccepterMissionDto dto){
+        return ResponseEntity.ok(this.service.accepter(dto));
     }
 
 }

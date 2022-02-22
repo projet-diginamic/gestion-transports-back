@@ -1,6 +1,8 @@
 package dev.services;
 
+import dev.dto.reservation.vehicule.AccepterMissionDto;
 import dev.dto.reservation.vehicule.ReservationVehiculeDto;
+import dev.entites.Chauffeur;
 import dev.entites.reservation.ReservationVehicule;
 import dev.exception.DateDepasseeException;
 import dev.exception.NotFoundException;
@@ -9,6 +11,7 @@ import dev.utils.Email;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -155,5 +158,40 @@ public class ReservationVehiculeService {
             throw new DateDepasseeException();
         }
         return this.repository.save(resa);
+    }
+
+    /**
+     * Renvoie la liste des résas concernant un chauffeur
+     * @param id
+     * @return
+     */
+    public List<ReservationVehicule> listerChauffeur(Integer id) {
+        return this.repository.findByChauffeurId(id);
+    }
+
+    /**
+     * Renvoie la liste des résas concernant un véhicule de service
+     * @param id
+     * @return
+     */
+    public List<ReservationVehicule> listerVehicule(Integer id) {
+        return this.repository.findByVehiculeId(id);
+    }
+
+    /**
+     * Accepte et retourne une réservation de véhicule de service par un chauffeur
+     * @param dto
+     * @return
+     */
+    @Transactional
+    public ReservationVehicule accepter(AccepterMissionDto dto) {
+        ReservationVehicule r = this.repository.findById(dto.getResa())
+                .orElseThrow(NotFoundException::new);
+
+        Chauffeur c = this.chauffeurRepository.findById(dto.getChauffeur())
+                .orElseThrow(NotFoundException::new);
+
+        r.setChauffeur(c);
+        return r;
     }
 }
