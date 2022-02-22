@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.dto.vehiculeService.CreerVehiculeServiceDto;
+import dev.dto.vehiculeService.VehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.entites.VehiculeService;
 import dev.exception.NotFoundException;
@@ -36,7 +36,7 @@ public class VehiculeServiceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto vehiculeServiceDto) {
+	public ResponseEntity<?> creerVehiculeService(@RequestBody VehiculeServiceDto vehiculeServiceDto) {
 		return this.vehiculeServiceService.creerVehiculeService(vehiculeServiceDto);
 	}
 
