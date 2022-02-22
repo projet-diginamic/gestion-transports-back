@@ -125,6 +125,7 @@ public class VehiculeServiceService {
 
 	}
 	// 4. Liste catégorie véhicule
+
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
 
 	// 6. Filtrer les véhicules par immatriculation
