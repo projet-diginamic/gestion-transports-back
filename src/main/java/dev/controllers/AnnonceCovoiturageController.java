@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.dto.AnnonceCovoiturageDto;
 import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
 import dev.services.AnnonceCovoiturageService;
@@ -46,7 +47,7 @@ public class AnnonceCovoiturageController {
     }
 
     @PostMapping
-    public ResponseEntity<AnnonceCovoiturage> publierAnnonce(@RequestBody AnnonceCovoiturage annonce){
+    public ResponseEntity<AnnonceCovoiturage> publierAnnonce(@RequestBody AnnonceCovoiturageDto annonce){
         return ResponseEntity.ok(this.covoiturageService.publierAnnonce(annonce));
     }
 

@@ -12,7 +12,7 @@ public class AnnonceCovoiturageDto {
 
     private LocalDateTime dateHeureDepart;
 
-    private Utilisateur organisateur;
+    private Integer organisateur;
 
     private AdresseDepart adresseDepart;
 
@@ -30,11 +30,11 @@ public class AnnonceCovoiturageDto {
         this.dateHeureDepart = dateHeureDepart;
     }
 
-    public Utilisateur getOrganisateur() {
+    public Integer getOrganisateur() {
         return organisateur;
     }
 
-    public void setOrganisateur(Utilisateur organisateur) {
+    public void setOrganisateur(Integer organisateur) {
         this.organisateur = organisateur;
     }
 
