@@ -120,9 +120,23 @@ public class ReservationVehiculeController {
         return ResponseEntity.ok(this.service.listerVehicule(Integer.parseInt(id)));
     }
 
+    /**
+     * Attribue une mission à un chauffeur
+     * @param dto
+     * @return la résa correspondante
+     */
     @PostMapping("/accepter-mission")
     public ResponseEntity<ReservationVehicule> accepter(@RequestBody AccepterMissionDto dto){
         return ResponseEntity.ok(this.service.accepter(dto));
+    }
+
+    /**
+     * Renvoie la liste des réservations avec chauffeur dont le chauffeur n'a pas encore été attribué
+     * @return
+     */
+    @GetMapping("en-attente-chauffeur")
+    public ResponseEntity<List<ReservationVehicule>> enAttente(){
+        return ResponseEntity.ok(this.service.enAttente());
     }
 
 }
