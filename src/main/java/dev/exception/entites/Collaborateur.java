@@ -1,4 +1,4 @@
-package dev.entites;
+package dev.exception.entites;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

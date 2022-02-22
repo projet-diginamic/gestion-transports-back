@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
-import dev.entites.VehiculeCovoiturage;
+import dev.exception.entites.VehiculeCovoiturage;
 import dev.repositories.VehiculeCovoiturageRepository;
 
 @Controller

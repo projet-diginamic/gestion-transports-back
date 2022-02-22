@@ -1,9 +1,8 @@
 package dev.dto.reservation.covoiturage;
 
 import dev.dto.UtilisateurDto;
-import dev.entites.adresse.AdresseArrivee;
-import dev.entites.adresse.AdresseDepart;
-import dev.entites.reservation.ReservationCovoiturage;
+import dev.exception.entites.adresse.AdresseArrivee;
+import dev.exception.entites.adresse.AdresseDepart;
 
 import java.time.LocalDateTime;
 import java.util.List;
