@@ -137,10 +137,7 @@ public class ReservationVehiculeService {
                 .orElseThrow(NotFoundException::new));
         r.setDateHeureDepart(dto.getDateHeureDepart());
         r.setDateHeureRetour(dto.getDateHeureRetour());
-        if(dto.getChauffeur() != null){
-            r.setChauffeur(this.chauffeurRepository.findById(dto.getChauffeur())
-                    .orElseThrow(NotFoundException::new));
-        }
+        r.setDemandeChauffeur(dto.getDemandeChauffeur());
         return this.repository.save(r);
     }
 
@@ -193,5 +190,13 @@ public class ReservationVehiculeService {
 
         r.setChauffeur(c);
         return r;
+    }
+
+    /**
+     * Renvoie la liste des résas véhicules avec chauffeur non encore attribuées à un chauffeur
+     * @return
+     */
+    public List<ReservationVehicule> enAttente() {
+        return this.repository.enAttente(LocalDateTime.now());
     }
 }

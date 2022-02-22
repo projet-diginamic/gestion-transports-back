@@ -1,7 +1,5 @@
 package dev.dto.reservation.vehicule;
 
-import dev.entites.VehiculeService;
-
 import java.time.LocalDateTime;
 
 /**
@@ -18,6 +16,8 @@ public class ReservationVehiculeDto {
     private LocalDateTime dateHeureRetour;
 
     private Integer passager;
+
+    private Boolean demandeChauffeur;
 
     public Integer getVehicule() {
         return vehicule;
@@ -57,5 +57,13 @@ public class ReservationVehiculeDto {
 
     public void setPassager(Integer passager) {
         this.passager = passager;
+    }
+
+    public Boolean getDemandeChauffeur() {
+        return demandeChauffeur;
+    }
+
+    public void setDemandeChauffeur(Boolean demandeChauffeur) {
+        this.demandeChauffeur = demandeChauffeur;
     }
 }
