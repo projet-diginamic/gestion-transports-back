@@ -52,4 +52,8 @@ public class VehiculeServiceController {
 		return ResponseEntity.ok(this.vehiculeServiceService.archiverVehiculeService(id));
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<?> detailVehiculeService(@PathVariable Integer id) throws NotFoundException {
+		return ResponseEntity.ok(this.vehiculeServiceService.detailVehiculeService(id));
+	};
 }

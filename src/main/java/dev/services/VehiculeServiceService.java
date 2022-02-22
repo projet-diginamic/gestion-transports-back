@@ -124,11 +124,24 @@ public class VehiculeServiceService {
 		}
 
 	}
-	// 4. Liste catégorie véhicule
 
 	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
 
-	// 6. Filtrer les véhicules par immatriculation
-	// 6. Filtrer les véhicules par marque
+	public ResponseEntity<?> detailVehiculeService(Integer id) throws NotFoundException {
+
+		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
+
+		if (optionalVehiculeService.isPresent()) {
+			// véhicule trouvé
+			VehiculeService vehiculeService = optionalVehiculeService.get();
+
+			return ResponseEntity.ok(vehiculeService);
+
+		} else {
+			// véhicule non trouvé
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("véhicule non trouvé");
+		}
+
+	}
 
 }
