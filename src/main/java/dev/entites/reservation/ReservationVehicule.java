@@ -27,6 +27,8 @@ public class ReservationVehicule extends Reservation {
 
     private LocalDateTime dateHeureRetour;
 
+    private Boolean demandeChauffeur;
+
     public VehiculeService getVehicule() {
         return vehicule;
     }
@@ -58,6 +60,14 @@ public class ReservationVehicule extends Reservation {
 
     public void setDateHeureRetour(LocalDateTime dateHeureRetour) {
         this.dateHeureRetour = dateHeureRetour;
+    }
+
+    public Boolean getDemandeChauffeur() {
+        return demandeChauffeur;
+    }
+
+    public void setDemandeChauffeur(Boolean demandeChauffeur) {
+        this.demandeChauffeur = demandeChauffeur;
     }
 
     public String toString(){
