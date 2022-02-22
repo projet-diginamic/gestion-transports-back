@@ -1,13 +1,11 @@
 package dev.dto.vehiculeService;
 
-//{
-//    "immatriculation": "BH-152-HG",
-//    "marque": "Jaguar",
-//    "modele": "Jag",
-//    "nbPlaces": 4,
-//    "photo": "photo",
-//    "categorie": 1
-//}
+//"immatriculation":"BZ-123-KL",
+//"marque":"tata motors",
+//"modele":"pot de yaourt",
+//"nbPlaces":0,
+//"photo":"url de ma photo",
+//"categorie":5
 
 public class CreerVehiculeServiceDto {
 
