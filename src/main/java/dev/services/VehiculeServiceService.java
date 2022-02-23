@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
+import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
 import dev.exception.NotFoundException;
@@ -41,12 +42,18 @@ public class VehiculeServiceService {
 		return this.vehiculeServiceRepository.listerVehicules(pr);
 	}
 
+
 	/**
 	 * Méthode pour créer un nouveau véhicule de service
 	 * @param creerVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
 	 */
+
+	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) {
+		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
+	}
+
 	@Transactional
 	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto creerVehiculeServiceDto)
 			throws NotFoundException {
