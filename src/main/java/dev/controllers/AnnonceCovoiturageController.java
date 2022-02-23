@@ -123,9 +123,9 @@ public class AnnonceCovoiturageController {
      */
     @GetMapping("rechercher")
     public ResponseEntity<List<AnnonceCovoiturage>> rechercherCovoit(@RequestParam(required = false) String date,
-                                                                     @RequestParam(required = false)  String dep,
+                                                                     @RequestParam(required = false) String dep,
                                                                      @RequestParam(required = false) String arr){
-        return ResponseEntity.ok(this.covoiturageService.rechercher(new ReqCovoit(dep,arr,LocalDate.parse(date))));
+        return ResponseEntity.ok(this.covoiturageService.rechercher(new ReqCovoit(dep,arr,date)));
     }
 
 }
