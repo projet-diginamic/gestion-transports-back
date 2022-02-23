@@ -36,6 +36,15 @@ public class AnnonceCovoiturageController {
     }
 
     /**
+     * Liste non paginée de toutes les annonces
+     * @return response ok liste annonces
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<AnnonceCovoiturage>> lister(){
+        return ResponseEntity.ok(this.covoiturageService.lister());
+    }
+
+    /**
      * Annonce par id
      * @param id
      * @return

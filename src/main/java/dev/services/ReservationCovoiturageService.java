@@ -148,12 +148,20 @@ public class ReservationCovoiturageService {
     }
 
     /**
-     * Renvoie la liste de toutes les résas en base
+     * Renvoie la liste paginée de toutes les résas en base
      * @param pr
      * @return liste des résas
      */
     public List<ReservationCovoiturage> listerToutesReservations(PageRequest pr) {
         return this.reservationCovoiturageRepository.findAll(pr).toList();
+    }
+
+    /**
+     * Renvoie la liste de toutes les résas
+     * @return
+     */
+    public List<ReservationCovoiturage> lister(){
+        return this.reservationCovoiturageRepository.findAll();
     }
 
     /**

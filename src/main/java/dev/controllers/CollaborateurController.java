@@ -5,6 +5,8 @@ import dev.services.CollaborateurService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("collaborateur")
 public class CollaborateurController {
@@ -28,5 +30,14 @@ public class CollaborateurController {
     @GetMapping("/is-admin/{id}")
     public ResponseEntity<Boolean> isAdmin(@PathVariable String id){
         return ResponseEntity.ok(this.service.isAdmin(Integer.parseInt(id)));
+    }
+
+    /**
+     * Liste de tous les collaborateurs
+     * @return
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<Collaborateur>> lister(){
+        return ResponseEntity.ok(this.service.lister());
     }
 }
