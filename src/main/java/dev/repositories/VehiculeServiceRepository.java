@@ -24,11 +24,11 @@ public interface VehiculeServiceRepository extends JpaRepository<VehiculeService
 	List<VehiculeServiceListeDtoCollaborateur> listerVehiculesCollaborateur(Pageable pageable);
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto"
-			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.marque=:marque")
-	List<VehiculeServiceListeDto> rechercherParMarque(@Param("marque") String marque);
+			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.marque like %:marque%")
+	Iterable<VehiculeServiceListeDto> rechercherParMarque(@Param("marque") String marque);
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto"
-			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.immatriculation=:immatriculation")
-	Optional<VehiculeServiceListeDto> rechercherParImmatriculation(@Param("immatriculation") String immatriculation);
+			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.immatriculation like %:immatriculation%")
+	Iterable<VehiculeServiceListeDto> rechercherParImmatriculation(@Param("immatriculation") String immatriculation);
 
 }

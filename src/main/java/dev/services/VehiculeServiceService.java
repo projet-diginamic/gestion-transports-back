@@ -33,9 +33,22 @@ public class VehiculeServiceService {
 		this.categorieRepository = categorieRepository;
 	}
 
+	/**
+	 * Méthode qui renvoie une liste de véhicules de service
+	 * @param pr PageRequest
+	 * @return Liste véhicules service
+	 */
 	public List<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) {
 		return this.vehiculeServiceRepository.listerVehicules(pr);
 	}
+
+
+	/**
+	 * Méthode pour créer un nouveau véhicule de service
+	 * @param creerVehiculeServiceDto
+	 * @return
+	 * @throws NotFoundException
+	 */
 
 	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) {
 		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
@@ -66,6 +79,12 @@ public class VehiculeServiceService {
 
 	}
 
+	/**
+	 * Méthode qui permet de modifier les informations d'un véhicule de service
+	 * @param modifierVehiculeServiceDto
+	 * @return
+	 * @throws NotFoundException
+	 */
 	@Transactional
 	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
 			throws NotFoundException {
@@ -110,6 +129,12 @@ public class VehiculeServiceService {
 
 	}
 
+	/**
+	 * Méthode qui permet d'archiver un véhicule (modification du statut en "Hors service"
+	 * @param id
+	 * @return
+	 * @throws NotFoundException
+	 */
 	@Transactional
 	public ResponseEntity<?> archiverVehiculeService(Integer id) throws NotFoundException {
 
@@ -130,8 +155,12 @@ public class VehiculeServiceService {
 
 	}
 
-	// 5. Détails du véhicule (id, marque, modele, nbPlaces, photo, statut)
-
+	/**
+	 * Méthode qui permet d'afficher les détails d'un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws NotFoundException
+	 */
 	public ResponseEntity<?> detailVehiculeService(Integer id) throws NotFoundException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
@@ -149,11 +178,21 @@ public class VehiculeServiceService {
 
 	}
 
-	public List<VehiculeServiceListeDto> vehiculeParMarque(String marque) {
+	/**
+	 * Méthode qui permet de filtrer les véhicules par marque
+	 * @param marque
+	 * @return
+	 */
+	public Iterable<VehiculeServiceListeDto> vehiculeParMarque(String marque) {
 		return this.vehiculeServiceRepository.rechercherParMarque(marque);
 	}
 
-	public Optional<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) {
+	/**
+	 * Méthode qui permet de filtrer les véhicules par immatriculation
+	 * @param immatriculation
+	 * @return
+	 */
+	public Iterable<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) {
 		return this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation);
 
 	}

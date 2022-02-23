@@ -66,12 +66,12 @@ public class VehiculeServiceController {
 	};
 
 	@GetMapping("/marque/{marque}")
-	public List<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) {
+	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) {
 		return this.vehiculeServiceService.vehiculeParMarque(marque);
 	}
 
 	@GetMapping("/immatriculation/{immatriculation}")
-	public Optional<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(
+	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(
 			@PathVariable String immatriculation) {
 		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
