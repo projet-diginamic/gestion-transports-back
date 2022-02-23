@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -117,12 +118,14 @@ public class AnnonceCovoiturageController {
 
     /**
      * Rechercher une annonce filtrée par critères (tous nullables)
-     * @param req = {adresseDepart, adresseArrivee, date}
+     * @param  {adresseDepart, adresseArrivee, date}
      * @return Liste des annonces satisfaisant aux critères
      */
     @GetMapping("rechercher")
-    public ResponseEntity<List<AnnonceCovoiturage>> rechercherCovoit(@RequestBody ReqCovoit req){
-        return ResponseEntity.ok(this.covoiturageService.rechercher(req));
+    public ResponseEntity<List<AnnonceCovoiturage>> rechercherCovoit(@RequestParam(required = false) String date,
+                                                                     @RequestParam(required = false) String dep,
+                                                                     @RequestParam(required = false) String arr){
+        return ResponseEntity.ok(this.covoiturageService.rechercher(new ReqCovoit(dep,arr,date)));
     }
 
 }

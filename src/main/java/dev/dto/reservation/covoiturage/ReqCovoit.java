@@ -9,6 +9,12 @@ public class ReqCovoit {
     private String adresseArrivee;
     private LocalDate date;
 
+    public ReqCovoit(String adresseDepart, String adresseArrivee, String date) {
+        this.adresseDepart = adresseDepart;
+        this.adresseArrivee = adresseArrivee;
+        if(date != null) this.date = LocalDate.parse(date);
+    }
+
     public String getAdresseDepart() {
         return adresseDepart;
     }

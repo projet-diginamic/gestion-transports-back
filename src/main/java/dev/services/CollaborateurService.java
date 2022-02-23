@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service collaborateurs
+ */
 @Service
 public class CollaborateurService {
 
@@ -16,11 +19,21 @@ public class CollaborateurService {
         this.repo = utilisateurRepository;
     }
 
+    /**
+     * Insère un collaborateur en base
+     * @param u
+     * @return
+     */
     public Integer insererUtilisateur(Collaborateur u) {
         this.repo.save(u);
         return u.getId();
     }
 
+    /**
+     * Renvoie un collaborateur
+     * @param id
+     * @return
+     */
     public Collaborateur afficherUtilisateur(Integer id) {
         return this.repo.findById(id)
                 .orElseThrow(NotFoundException::new);

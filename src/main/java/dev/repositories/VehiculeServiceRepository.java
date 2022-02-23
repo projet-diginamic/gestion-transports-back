@@ -1,8 +1,6 @@
 package dev.repositories;
 
-import java.util.List;
-import java.util.Optional;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +16,10 @@ public interface VehiculeServiceRepository extends JpaRepository<VehiculeService
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto(v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v "
 			+ "inner join v.categorie c ")
-	List<VehiculeServiceListeDto> listerVehicules(Pageable pageable);
+	Page<VehiculeServiceListeDto> listerVehicules(Pageable pageable);
 
-	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur(v.id, v.marque, v.modele, v.immatriculation, v.photo) from VehiculeService v ")
-	List<VehiculeServiceListeDtoCollaborateur> listerVehiculesCollaborateur(Pageable pageable);
+	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur(v.id, v.marque, v.modele, v.immatriculation, v.photo) from VehiculeService v where v.statut = 'En service'")
+	Page<VehiculeServiceListeDtoCollaborateur> listerVehiculesCollaborateur(Pageable pageable);
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto"
 			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.marque like %:marque%")
