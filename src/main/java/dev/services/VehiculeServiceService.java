@@ -4,9 +4,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import dev.exception.NotFoundImmatriculationException;
-import dev.exception.ListeVideException;
-import dev.exception.NotFoundMarqueException;
+import dev.exception.*;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
-import dev.exception.NotFoundException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;
 
@@ -75,12 +73,17 @@ public class VehiculeServiceService {
 	 */
 	@Transactional
 	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto creerVehiculeServiceDto)
-			throws NotFoundException {
+			throws NotFoundException, FormatImmatriculationException {
 		VehiculeService vehiculeService = new VehiculeService();
 
 		Optional<Categorie> optionalCategorie = categorieRepository.findById(creerVehiculeServiceDto.getCategorie());
 
-		vehiculeService.setImmatriculation(creerVehiculeServiceDto.getImmatriculation());
+		if (creerVehiculeServiceDto.getImmatriculation().matches("^[A-Z]{2}[-][0-9]{3}[-][A-Z]{2}$")) {
+			vehiculeService.setImmatriculation(creerVehiculeServiceDto.getImmatriculation());
+		} else {
+			throw new FormatImmatriculationException("La plaque d'immatriculation renseignée n'a pas le bon format");
+		}
+
 		vehiculeService.setMarque(creerVehiculeServiceDto.getMarque());
 		vehiculeService.setModele(creerVehiculeServiceDto.getModele());
 		vehiculeService.setNbPlaces(creerVehiculeServiceDto.getNbPlaces());

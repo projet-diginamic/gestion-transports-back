@@ -1,8 +1,7 @@
 package dev.controllers;
 
-import dev.exception.NotFoundImmatriculationException;
-import dev.exception.ListeVideException;
-import dev.exception.NotFoundMarqueException;
+import dev.exception.*;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
-import dev.exception.NotFoundException;
 import dev.services.VehiculeServiceService;
 
 @RestController
@@ -46,7 +44,7 @@ public class VehiculeServiceController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto) {
+	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto) throws NotFoundException, FormatImmatriculationException {
 		return this.vehiculeServiceService.creerVehiculeService(creerVehiculeServiceDto);
 	}
 
