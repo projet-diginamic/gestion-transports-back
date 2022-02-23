@@ -1,10 +1,13 @@
 package dev.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import dev.exception.NotFoundImmatriculationException;
+import dev.exception.ListeVideException;
+import dev.exception.NotFoundMarqueException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +41,31 @@ public class VehiculeServiceService {
 	 * @param pr PageRequest
 	 * @return Liste véhicules service
 	 */
-	public List<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) {
-		return this.vehiculeServiceRepository.listerVehicules(pr);
+	public Page<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) throws ListeVideException {
+		if (this.vehiculeServiceRepository.listerVehicules(pr).iterator().hasNext()) {
+			return this.vehiculeServiceRepository.listerVehicules(pr);
+		} else {
+			throw new ListeVideException("Aucune donnée disponible");
+		}
+
 	}
 
+	/**
+	 * Méthode qui renvoie une liste de véhicules de service avec statut en service - A destination des collaborateurs
+	 * @param pr
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public Page<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) throws ListeVideException {
+		if (this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr).iterator().hasNext()) {
+			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);//pr
+		} else {
+			throw new ListeVideException("Actuellement, aucun véhicule n'a le statut 'En service'");
+		}
+
+//		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
+
+	}
 
 	/**
 	 * Méthode pour créer un nouveau véhicule de service
@@ -49,11 +73,6 @@ public class VehiculeServiceService {
 	 * @return
 	 * @throws NotFoundException
 	 */
-
-	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) {
-		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
-	}
-
 	@Transactional
 	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto creerVehiculeServiceDto)
 			throws NotFoundException {
@@ -183,18 +202,28 @@ public class VehiculeServiceService {
 	 * @param marque
 	 * @return
 	 */
-	public Iterable<VehiculeServiceListeDto> vehiculeParMarque(String marque) {
-		return this.vehiculeServiceRepository.rechercherParMarque(marque);
+	public Iterable<VehiculeServiceListeDto> vehiculeParMarque(String marque) throws NotFoundMarqueException {
+		if (this.vehiculeServiceRepository.rechercherParMarque(marque).iterator().hasNext()) {
+			return this.vehiculeServiceRepository.rechercherParMarque(marque);
+		} else {
+			throw new NotFoundMarqueException("Aucune marque ne correspond à votre recherche");
+		}
+
 	}
 
 	/**
 	 * Méthode qui permet de filtrer les véhicules par immatriculation
 	 * @param immatriculation
 	 * @return
+	 * @throws NotFoundImmatriculationException
 	 */
-	public Iterable<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) {
-		return this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation);
-
+	public Iterable<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) throws NotFoundImmatriculationException {
+		if (this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation).iterator().hasNext()) {
+			return this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation);
+		} else {
+			throw new NotFoundImmatriculationException("Aucune immatriculation ne correspond à votre recherche");
+		}
 	}
+
 
 }
