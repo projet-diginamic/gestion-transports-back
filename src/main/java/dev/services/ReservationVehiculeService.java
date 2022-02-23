@@ -199,4 +199,12 @@ public class ReservationVehiculeService {
     public List<ReservationVehicule> enAttente() {
         return this.repository.enAttente(LocalDateTime.now());
     }
+
+    /**
+     * Liste de toutes les résas
+     * @return
+     */
+    public List<ReservationVehicule> lister() {
+        return this.repository.findAll();
+    }
 }

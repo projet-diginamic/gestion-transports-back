@@ -33,6 +33,15 @@ public class ReservationVehiculeController {
     }
 
     /**
+     * Liste non paginée de toutes les résa véhicule
+     * @return
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<ReservationVehicule>> lister(){
+        return ResponseEntity.ok(this.service.lister());
+    }
+
+    /**
      * Renvoie une résa véhicule correspondant à l'id passé
      * @param id
      * @return
