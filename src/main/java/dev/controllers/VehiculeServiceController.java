@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
+import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.exception.NotFoundException;
 import dev.services.VehiculeServiceService;
 
@@ -37,6 +38,12 @@ public class VehiculeServiceController {
 		return this.vehiculeServiceService.afficherVehiculesService(PageRequest.of(start, size));
 	}
 
+	@GetMapping("collaborateur")
+	public List<VehiculeServiceListeDtoCollaborateur> listerVehiculesServiceCollaborateur(@RequestParam Integer start,
+			@RequestParam Integer size) {
+		return this.vehiculeServiceService.afficherVehiculesServiceCollaborateur(PageRequest.of(start, size));
+	}
+
 	@PostMapping
 	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto) {
 		return this.vehiculeServiceService.creerVehiculeService(creerVehiculeServiceDto);
@@ -53,7 +60,6 @@ public class VehiculeServiceController {
 		return ResponseEntity.ok(this.vehiculeServiceService.archiverVehiculeService(id));
 	}
 
-
 	@GetMapping("/{id}")
 	public ResponseEntity<?> detailVehiculeService(@PathVariable Integer id) throws NotFoundException {
 		return ResponseEntity.ok(this.vehiculeServiceService.detailVehiculeService(id));
@@ -69,6 +75,5 @@ public class VehiculeServiceController {
 			@PathVariable String immatriculation) {
 		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
-
 
 }

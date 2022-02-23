@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
+import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
 import dev.exception.NotFoundException;
@@ -34,6 +35,10 @@ public class VehiculeServiceService {
 
 	public List<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) {
 		return this.vehiculeServiceRepository.listerVehicules(pr);
+	}
+
+	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) {
+		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
 	}
 
 	@Transactional
