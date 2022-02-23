@@ -1,8 +1,9 @@
 package dev.controllers;
 
-import java.util.List;
-import java.util.Optional;
-
+import dev.exception.NotFoundImmatriculationException;
+import dev.exception.ListeVideException;
+import dev.exception.NotFoundMarqueException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,14 +34,14 @@ public class VehiculeServiceController {
 	}
 
 	@GetMapping
-	public List<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start,
-			@RequestParam Integer size) {
+	public Page<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start,
+																@RequestParam Integer size) throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesService(PageRequest.of(start, size));
 	}
 
 	@GetMapping("collaborateur")
-	public List<VehiculeServiceListeDtoCollaborateur> listerVehiculesServiceCollaborateur(@RequestParam Integer start,
-			@RequestParam Integer size) {
+	public Page<VehiculeServiceListeDtoCollaborateur> listerVehiculesServiceCollaborateur(@RequestParam Integer start,
+			@RequestParam Integer size) throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesServiceCollaborateur(PageRequest.of(start, size));
 	}
 
@@ -66,13 +67,13 @@ public class VehiculeServiceController {
 	};
 
 	@GetMapping("/marque/{marque}")
-	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) {
+	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) throws NotFoundMarqueException {
 		return this.vehiculeServiceService.vehiculeParMarque(marque);
 	}
 
 	@GetMapping("/immatriculation/{immatriculation}")
 	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(
-			@PathVariable String immatriculation) {
+			@PathVariable String immatriculation) throws NotFoundImmatriculationException {
 		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
 
