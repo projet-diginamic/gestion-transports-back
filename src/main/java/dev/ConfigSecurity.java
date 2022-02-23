@@ -1,10 +1,18 @@
 package dev;
 
+import dev.auth.UtilisateurDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,6 +20,31 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 public class ConfigSecurity
         extends WebSecurityConfigurerAdapter {
+
+    /////////////////////////////////////////////////////
+    @Autowired
+    UserDetailsService utilisateurDetailsService;
+
+    /**
+     * Authentification manager
+     * @param auth
+     * @throws Exception
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(utilisateurDetailsService);
+    }
+
+    /**
+     * A des fins de démonstration uniquement !
+     * @return password encoder qui n'encode pas
+     */
+    @Bean
+    PasswordEncoder getPasswordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+    /////////////////////////////////////////////////////
 
     @Override
     protected void configure(HttpSecurity http)
@@ -23,7 +56,8 @@ public class ConfigSecurity
 
         http.csrf().disable().
                 authorizeRequests().anyRequest().
-                permitAll().and().httpBasic();
+                permitAll().and().httpBasic();        // SANS AUTHENTIFICATION
+        //        authenticated().and().httpBasic();      // AVEC AUTHENTIFICATION BASIQUE (DEMO UNIQUEMENT)
         /**
          * Site inacessible :)
          * Pas de login rien :)))
