@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
-import dev.dto.vehiculeService.ReqVehicule;
+import dev.dto.vehiculeService.ReqVehiculeServiceDate;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.VehiculeService;
@@ -58,7 +58,7 @@ public class VehiculeServiceController {
 	 */
 	@GetMapping("collaborateur-date/{date}")
 	public List<VehiculeService> listerVehiculesCollaborateurDateLibre(@PathVariable String date) {
-		return this.vehiculeServiceService.rechercherEnServiceDateLibre(new ReqVehicule(date));
+		return this.vehiculeServiceService.rechercherEnServiceDateLibre(new ReqVehiculeServiceDate(date));
 	}
 
 	@PostMapping
