@@ -1,5 +1,8 @@
 package dev.repositories;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,5 +31,10 @@ public interface VehiculeServiceRepository extends JpaRepository<VehiculeService
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto"
 			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.immatriculation like %:immatriculation%")
 	Iterable<VehiculeServiceListeDto> rechercherParImmatriculation(@Param("immatriculation") String immatriculation);
+
+	@Query(value = "SELECT * FROM vehicule "
+			+ "LEFT JOIN reservation_vehicule ON vehicule.id = reservation_vehicule.id_vehicule " + "WHERE "
+			+ "(vehicule.statut = 'En service' AND :date != date(reservation_vehicule.date_heure_depart)) ", nativeQuery = true)
+	List<VehiculeService> rechercherEnServiceDateLibre(@Param("date") LocalDate date);
 
 }

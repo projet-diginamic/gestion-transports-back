@@ -1,7 +1,7 @@
 package dev.controllers;
 
-import dev.exception.*;
-import org.hibernate.exception.ConstraintViolationException;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
+import dev.dto.vehiculeService.ReqVehicule;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
+import dev.entites.VehiculeService;
+import dev.exception.FormatImmatriculationException;
+import dev.exception.ListeVideException;
+import dev.exception.NotFoundException;
+import dev.exception.NotFoundImmatriculationException;
+import dev.exception.NotFoundMarqueException;
 import dev.services.VehiculeServiceService;
 
 @RestController
@@ -32,8 +39,8 @@ public class VehiculeServiceController {
 	}
 
 	@GetMapping
-	public Page<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start,
-																@RequestParam Integer size) throws ListeVideException {
+	public Page<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start, @RequestParam Integer size)
+			throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesService(PageRequest.of(start, size));
 	}
 
@@ -43,8 +50,25 @@ public class VehiculeServiceController {
 		return this.vehiculeServiceService.afficherVehiculesServiceCollaborateur(PageRequest.of(start, size));
 	}
 
+	/**
+	 * Rechercher un véhicule en service et libre à la date donnée
+	 * 
+	 * @param {date}
+	 * @return Liste des vehicules satisfaisant aux critères
+	 */
+	@GetMapping("collaborateur-date/{date}")
+	public List<VehiculeService> listerVehiculesCollaborateurDateLibre(@PathVariable String date) {
+		return this.vehiculeServiceService.rechercherEnServiceDateLibre(new ReqVehicule(date));
+	}
+
+//	@GetMapping("collaborateur-date")
+//	public List<VehiculeService> listerVehiculesCollaborateurDateLibre() {
+//		return this.vehiculeServiceService.rechercherSansDate();
+//	}
+
 	@PostMapping
-	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto) throws NotFoundException, FormatImmatriculationException {
+	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto)
+			throws NotFoundException, FormatImmatriculationException {
 		return this.vehiculeServiceService.creerVehiculeService(creerVehiculeServiceDto);
 	}
 
@@ -65,13 +89,14 @@ public class VehiculeServiceController {
 	};
 
 	@GetMapping("/marque/{marque}")
-	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque) throws NotFoundMarqueException {
+	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParMarque(@PathVariable String marque)
+			throws NotFoundMarqueException {
 		return this.vehiculeServiceService.vehiculeParMarque(marque);
 	}
 
 	@GetMapping("/immatriculation/{immatriculation}")
-	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(
-			@PathVariable String immatriculation) throws NotFoundImmatriculationException {
+	public Iterable<VehiculeServiceListeDto> rechercherVehiculeParImmatriculation(@PathVariable String immatriculation)
+			throws NotFoundImmatriculationException {
 		return this.vehiculeServiceService.vehiculeParImmatriculation(immatriculation);
 	}
 
