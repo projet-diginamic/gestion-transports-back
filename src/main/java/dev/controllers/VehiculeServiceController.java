@@ -61,11 +61,6 @@ public class VehiculeServiceController {
 		return this.vehiculeServiceService.rechercherEnServiceDateLibre(new ReqVehicule(date));
 	}
 
-//	@GetMapping("collaborateur-date")
-//	public List<VehiculeService> listerVehiculesCollaborateurDateLibre() {
-//		return this.vehiculeServiceService.rechercherSansDate();
-//	}
-
 	@PostMapping
 	public ResponseEntity<?> creerVehiculeService(@RequestBody CreerVehiculeServiceDto creerVehiculeServiceDto)
 			throws NotFoundException, FormatImmatriculationException {
