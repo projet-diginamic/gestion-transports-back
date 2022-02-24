@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import dev.exception.ListeVideException;
+import dev.utils.Resa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +46,24 @@ public class ReservationVehiculeService {
 	}
 
 	/**
+	 * Renvoie la liste si non vide, lance une exception sinon
+	 * @param l
+	 * @return
+	 * @throws ListeVideException
+	 */
+	private List<ReservationVehicule> safeReturnList(List<ReservationVehicule> l) throws ListeVideException {
+		if(l.isEmpty()) throw new ListeVideException("Pas de réservation de véhicule de service à renvoyer.");
+		return l;
+	}
+
+	/**
 	 * Renvoie la liste paginé des resas véhicules
 	 * 
 	 * @param pr
 	 * @return
 	 */
-	public List<ReservationVehicule> listerVehicules(PageRequest pr) {
-		return this.repository.findAll(pr).toList();
+	public List<ReservationVehicule> listerVehicules(PageRequest pr) throws ListeVideException {
+		return this.safeReturnList(this.repository.findAll(pr).toList());
 	}
 
 	/**
@@ -70,8 +83,8 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerMesResas(Integer id) {
-		return this.repository.findByPassagerId(id);
+	public List<ReservationVehicule> listerMesResas(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByPassagerId(id));
 	}
 
 	/**
@@ -80,8 +93,8 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerMesResasAVenir(Integer id) {
-		return this.repository.findByPassagerIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay());
+	public List<ReservationVehicule> listerMesResasAVenir(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByPassagerIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay()));
 	}
 
 	/**
@@ -90,8 +103,38 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerMesResasHisto(Integer id) {
-		return this.repository.findByPassagerIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay());
+	public List<ReservationVehicule> listerMesResasHisto(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByPassagerIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay()));
+	}
+
+	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasActives(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasArchives(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
+	}
+
+	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasAnnulees(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ANNULE.getVal()));
 	}
 
 	/**
@@ -129,7 +172,8 @@ public class ReservationVehiculeService {
 		if (r.getDateHeureDepart().isBefore(LocalDateTime.now())) {
 			throw new DateDepasseeException();
 		}
-		this.repository.deleteById(r.getId());
+		r.setStatut(Resa.ANNULE.getVal());
+		this.repository.save(r);
 		this.email.envoyerEmail(motif, r);
 		return r;
 	}
@@ -147,6 +191,7 @@ public class ReservationVehiculeService {
 		r.setDateHeureDepart(dto.getDateHeureDepart());
 		r.setDateHeureRetour(dto.getDateHeureRetour());
 		r.setDemandeChauffeur(dto.getDemandeChauffeur());
+		r.setStatut(Resa.ACTIF.getVal());
 		return this.repository.save(r);
 	}
 
@@ -165,13 +210,63 @@ public class ReservationVehiculeService {
 	}
 
 	/**
-	 * Renvoie la liste des résas concernant un chauffeur
+	 * Renvoie la liste des résas ACTIVES concernant un chauffeur
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerChauffeur(Integer id) {
-		return this.repository.findByChauffeurId(id);
+	public List<ReservationVehicule> listerChauffeur(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ARCHIVEES concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	public List<ReservationVehicule> listerChauffeurArchive(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ANNULEES concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	public List<ReservationVehicule> listerChauffeurAnnule(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ANNULE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ACTIF concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeActive(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ANNULEES concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeAnnule(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ANNULE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ARCHIVEES concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeArchive(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
 	}
 
 	/**
@@ -180,8 +275,8 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerVehicule(Integer id) {
-		return this.repository.findByVehiculeId(id);
+	public List<ReservationVehicule> listerVehicule(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByVehiculeId(id));
 	}
 
 	/**
@@ -191,8 +286,8 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerVehiculeHisto(Integer id) {
-		return this.repository.findByVehiculeIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay());
+	public List<ReservationVehicule> listerVehiculeHisto(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByVehiculeIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay()));
 	}
 
 	/**
@@ -202,8 +297,8 @@ public class ReservationVehiculeService {
 	 * @param id
 	 * @return
 	 */
-	public List<ReservationVehicule> listerVehiculeAvenir(Integer id) {
-		return this.repository.findByVehiculeIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay());
+	public List<ReservationVehicule> listerVehiculeAvenir(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByVehiculeIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay()));
 	}
 
 	/**
@@ -228,8 +323,8 @@ public class ReservationVehiculeService {
 	 * 
 	 * @return
 	 */
-	public List<ReservationVehicule> enAttente() {
-		return this.repository.enAttente(LocalDateTime.now());
+	public List<ReservationVehicule> enAttente() throws ListeVideException {
+		return this.safeReturnList(this.repository.enAttente(LocalDateTime.now()));
 	}
 
 	/**
@@ -237,7 +332,7 @@ public class ReservationVehiculeService {
 	 * 
 	 * @return
 	 */
-	public List<ReservationVehicule> lister() {
-		return this.repository.findAll();
+	public List<ReservationVehicule> lister() throws ListeVideException {
+		return this.safeReturnList(this.repository.findAll());
 	}
 }

@@ -17,12 +17,15 @@ public interface AnnonceCovoiturageRepository extends JpaRepository<AnnonceCovoi
 
     List<AnnonceCovoiturage> findByOrganisateurIdAndDateHeureDepartLessThan(Integer id, LocalDateTime date);
 
+    List<AnnonceCovoiturage> findByStatutLike(String statut);
+
     @Query(value =
             "SELECT * FROM annonce_covoiturage "+
                     "LEFT JOIN adresse_depart ON annonce_covoiturage.adresse_depart = adresse_depart.id "+
                     "LEFT JOIN adresse_arrivee ON annonce_covoiturage.adresse_arrivee = adresse_arrivee.id "+
                     "WHERE "+
-                    "(:date is NULL or :date = date(date_heure_depart)) "+
+                    " annonce_covoiturage.statut='OUVERT' "+
+                    "AND (:date is NULL or :date = date(date_heure_depart)) "+
                     "AND (:addrDep is NULL or adresse_depart.ville = :addrDep) "+
                     "AND (:addrArr is NULL or adresse_arrivee.ville = :addrArr)", nativeQuery = true)
     List<AnnonceCovoiturage> rechercher(
