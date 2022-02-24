@@ -27,6 +27,8 @@ import dev.exception.NotFoundImmatriculationException;
 import dev.exception.NotFoundMarqueException;
 import dev.services.VehiculeServiceService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("vehicule-service")
 public class VehiculeServiceController {
@@ -39,13 +41,13 @@ public class VehiculeServiceController {
 	}
 
 	@GetMapping
-	public Page<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start, @RequestParam Integer size)
-			throws ListeVideException {
+	public List<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start,
+																@RequestParam Integer size) throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesService(PageRequest.of(start, size));
 	}
 
 	@GetMapping("collaborateur")
-	public Page<VehiculeServiceListeDtoCollaborateur> listerVehiculesServiceCollaborateur(@RequestParam Integer start,
+	public List<VehiculeServiceListeDtoCollaborateur> listerVehiculesServiceCollaborateur(@RequestParam Integer start,
 			@RequestParam Integer size) throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesServiceCollaborateur(PageRequest.of(start, size));
 	}
@@ -69,7 +71,7 @@ public class VehiculeServiceController {
 
 	@PutMapping
 	public ResponseEntity<?> modifierVehiculeService(@RequestBody ModifierVehiculeServiceDto modifierVehiculeServiceDto)
-			throws NotFoundException {
+			throws NotFoundException, FormatImmatriculationException {
 		return ResponseEntity.ok(this.vehiculeServiceService.modifierVehiculeService(modifierVehiculeServiceDto));
 	}
 
