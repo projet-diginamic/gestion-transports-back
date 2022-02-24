@@ -6,15 +6,13 @@ import dev.dto.reservation.covoiturage.*;
 import dev.entites.AnnonceCovoiturage;
 import dev.entites.Collaborateur;
 import dev.entites.reservation.ReservationCovoiturage;
-import dev.exception.CovoiturageCompletException;
-import dev.exception.DateDepasseeException;
-import dev.exception.ListeVideException;
-import dev.exception.NotFoundException;
+import dev.exception.*;
 import dev.repositories.AnnonceCovoiturageRepository;
 import dev.repositories.CollaborateurRepository;
 import dev.repositories.ReservationCovoiturageRepository;
+import dev.utils.Annonce;
 import dev.utils.Email;
-import org.aspectj.weaver.ast.Not;
+import dev.utils.Resa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -42,14 +40,16 @@ public class ReservationCovoiturageService {
     }
 
     /**
-     * Vérifie le nb de places restantes, lance l'exception si complet
+     * Vérifie que l'annonce est ouverte et le nb de places restantes suffisant, lance l'exception sinon
      * @param annonce
      * @throws CovoiturageCompletException
      */
-    private void verifierNbPlaces(AnnonceCovoiturage annonce) throws CovoiturageCompletException {
+    private AnnonceCovoiturage verifierAnnonceValide(AnnonceCovoiturage annonce) throws CovoiturageCompletException, CovoiturageIndisponibleException {
+        if(!annonce.getStatut().equals(Annonce.OUVERT.getVal())) throw new CovoiturageIndisponibleException("Ce covoiturage n'est pas ouvert à la réservation");
         if(annonce.getNbPlaces() <= this.reservationCovoiturageRepository.calculerNbPlacesReservees(annonce.getId())){
             throw new CovoiturageCompletException("Plus de places disponibles sur ce covoiturage");
         }
+        return annonce;
     }
 
     /**
@@ -81,19 +81,18 @@ public class ReservationCovoiturageService {
      * @throws NotFoundException
      */
     public ReservationCovoiturage reserverCovoiturage(CreerReservationCovoiturageDto resa) throws NotFoundException {
-        AnnonceCovoiturage annonce = this.annonceCovoiturageRepository
+        AnnonceCovoiturage annonce = this.verifierAnnonceValide(
+                this.annonceCovoiturageRepository
                 .findById(resa.getIdCovoiturage())
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(NotFoundException::new));
         Collaborateur collab = this.utilisateurRepository
                 .findById(resa.getIdCollaborateur())
                 .orElseThrow(NotFoundException::new);
 
-        this.verifierNbPlaces(annonce);
-
         ReservationCovoiturage nouvelleResa = new ReservationCovoiturage();
         nouvelleResa.setAnnonceCovoiturage(annonce);
         nouvelleResa.setPassager(collab);
-
+        nouvelleResa.setStatut(Resa.ACTIF.getVal());
         return this.reservationCovoiturageRepository.save(nouvelleResa);
     }
 
@@ -128,7 +127,8 @@ public class ReservationCovoiturageService {
             throw new DateDepasseeException();
         }
 
-        this.reservationCovoiturageRepository.deleteById(resa.getId());
+        resa.setStatut(Resa.ANNULE.getVal());
+        this.reservationCovoiturageRepository.save(resa);
 
         this.email.envoyerEmail(raison, resa);
     }
@@ -148,11 +148,10 @@ public class ReservationCovoiturageService {
                         .findById(nouvelleResa.getIdPassager())
                                 .orElseThrow(NotFoundException::new);
 
-        AnnonceCovoiturage annonce = this.annonceCovoiturageRepository
+        AnnonceCovoiturage annonce = this.verifierAnnonceValide(
+                this.annonceCovoiturageRepository
                         .findById(nouvelleResa.getIdCovoiturage())
-                                .orElseThrow(NotFoundException::new);
-
-        this.verifierNbPlaces(annonce);
+                                .orElseThrow(NotFoundException::new));
 
         resa.setPassager(pax);
         resa.setAnnonceCovoiturage(annonce);
@@ -222,5 +221,41 @@ public class ReservationCovoiturageService {
                 .map(this.reservationCovoiturageRepository
                         .listerReservationsParUtilisateur(id_utilisateur)));
     }
+
+    /**
+     * Lister les resas ACTIVES d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    public List<ReservationCovoiturageSimpleDto> listerParUtilisateurActive(Integer id) throws ListeVideException{
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                        .findByPassagerIdAndStatutLike(id, Resa.ACTIF.getVal())));
+    }
+    /**
+     * Lister les resas ARCHIVE d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    public List<ReservationCovoiturageSimpleDto> listerParUtilisateurArchive(Integer id) throws ListeVideException{
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                        .findByPassagerIdAndStatutLike(id, Resa.ARCHIVE.getVal())));
+    }
+
+    /**
+     * Lister les resas ANNULEES d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    public List<ReservationCovoiturageSimpleDto> listerParUtilisateurAnnule(Integer id) throws ListeVideException{
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                        .findByPassagerIdAndStatutLike(id, Resa.ANNULE.getVal())));
+    }
+
 
 }

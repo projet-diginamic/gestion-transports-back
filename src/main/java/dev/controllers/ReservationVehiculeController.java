@@ -94,6 +94,39 @@ public class ReservationVehiculeController {
 	}
 
 	/**
+	 * Renvoie la liste des résas passées d'un utilisateur
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("utilisateur-active/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasActive(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerMesResasActives(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie la liste des résas passées d'un utilisateur
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("utilisateur-archive/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasArchive(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerMesResasArchives(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie la liste des résas passées d'un utilisateur
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("utilisateur-annule/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasAnnule(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerMesResasAnnulees(Integer.parseInt(id)));
+	}
+
+	/**
 	 * Supprimer une réservation
 	 * 
 	 * @param id
@@ -138,12 +171,34 @@ public class ReservationVehiculeController {
 	}
 
 	/**
+	 * Renvoie toutes les résas archivées concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/chauffeur-archive/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerChauffeurHisto(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerChauffeurArchive(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie toutes les résas annulées concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/chauffeur-annule/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerChauffeurAnnule(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerChauffeurAnnule(Integer.parseInt(id)));
+	}
+
+	/**
 	 * Renvoie toutes les résas concernant un véhicule de service
 	 * 
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/vehicule/{id}")
+	@GetMapping("/par-vehicule/{id}")
 	public ResponseEntity<List<ReservationVehicule>> listerVehicule(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehicule(Integer.parseInt(id)));
 	}
@@ -155,7 +210,7 @@ public class ReservationVehiculeController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/vehicule-histo/{id}")
+	@GetMapping("/par-vehicule-histo/{id}")
 	public ResponseEntity<List<ReservationVehicule>> listerVehiculeHisto(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehiculeHisto(Integer.parseInt(id)));
 	}
@@ -167,9 +222,45 @@ public class ReservationVehiculeController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("/vehicule-avenir/{id}")
+	@GetMapping("/par-vehicule-avenir/{id}")
 	public ResponseEntity<List<ReservationVehicule>> listerVehiculeAvenir(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehiculeAvenir(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie toutes les résas ACTIF concernant un véhicule de service après la
+	 * date/heure du jour
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/par-vehicule-active/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerVehiculeActif(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerVehiculeActive(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie toutes les résas ARCHIVEES concernant un véhicule de service après la
+	 * date/heure du jour
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/par-vehicule-archive/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerVehiculeArchive(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerVehiculeArchive(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie toutes les résas ANNULEE concernant un véhicule de service après la
+	 * date/heure du jour
+	 *
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/par-vehicule-annule/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerVehiculeAnnule(@PathVariable String id) throws ListeVideException {
+		return ResponseEntity.ok(this.service.listerVehiculeAnnule(Integer.parseInt(id)));
 	}
 
 	/**

@@ -31,9 +31,9 @@ public class TransportExceptionHandler {
        return "Erreur : Email d'annulation non envoyé";
     }
 
-    @ExceptionHandler(value = {CovoiturageCompletException.class})
+    @ExceptionHandler(value = {CovoiturageIndisponibleException.class, CovoiturageCompletException.class})
     @ResponseStatus(value=HttpStatus.CONFLICT)
-    public String onCovoiturageCompletException(CovoiturageCompletException e){
+    public String onCovoiturageCompletException(Exception e){
         return  e.getMessage();
     }
 

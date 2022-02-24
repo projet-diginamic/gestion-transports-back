@@ -8,6 +8,7 @@ import dev.exception.DateDepasseeException;
 import dev.exception.ListeVideException;
 import dev.exception.NotFoundException;
 import dev.repositories.*;
+import dev.utils.Annonce;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -103,6 +104,7 @@ public class AnnonceCovoiturageService {
         a.setNbPlaces(dto.getNbPlaces());
         a.setVehicule(this.vehiculeCovoiturageRepository
                 .save(dto.getVehicule()));
+        a.setStatut(Annonce.OUVERT.getVal());
         return this.annonceCovoiturageRepository.save(a);
     }
 
@@ -124,7 +126,8 @@ public class AnnonceCovoiturageService {
         annonce.getResas().forEach(x -> this.reservationCovoiturageService
                 .supprimerReservationCovoiturageResa("Annulation du covoiturage", x));
 
-        this.annonceCovoiturageRepository.deleteById(id);
+        annonce.setStatut(Annonce.ANNULE.getVal());
+        this.annonceCovoiturageRepository.save(annonce);
         return annonce;
     }
 
@@ -187,5 +190,35 @@ public class AnnonceCovoiturageService {
                 .rechercher(req.getAdresseDepart(),
                         req.getAdresseArrivee(),
                         req.getDate()));
+    }
+
+    /**
+     * Lister les annonces statut OUVERT
+     * @return
+     * @throws ListeVideException
+     */
+    public List<AnnonceCovoiturage> listerActives() throws ListeVideException{
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .findByStatutLike(Annonce.OUVERT.getVal()));
+    }
+
+    /**
+     * Lister les annonces statut ARCHIVE
+     * @return
+     * @throws ListeVideException
+     */
+    public List<AnnonceCovoiturage> listerArchives() throws ListeVideException{
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .findByStatutLike(Annonce.ARCHIVE.getVal()));
+    }
+
+    /**
+     * Lister les annonces statut ANNULE
+     * @return
+     * @throws ListeVideException
+     */
+    public List<AnnonceCovoiturage> listerAnnule() throws ListeVideException{
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .findByStatutLike(Annonce.ANNULE.getVal()));
     }
 }

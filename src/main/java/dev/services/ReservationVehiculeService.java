@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import dev.exception.ListeVideException;
+import dev.utils.Resa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +108,36 @@ public class ReservationVehiculeService {
 	}
 
 	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasActives(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasArchives(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
+	}
+
+	/**
+	 * Liste toutes les résas ACTIVES d'un passager
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerMesResasAnnulees(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByPassagerIdAndStatutLike(id, Resa.ANNULE.getVal()));
+	}
+
+	/**
 	 * Annuler la réservation d'un passager
 	 * 
 	 * @param id
@@ -141,7 +172,8 @@ public class ReservationVehiculeService {
 		if (r.getDateHeureDepart().isBefore(LocalDateTime.now())) {
 			throw new DateDepasseeException();
 		}
-		this.repository.deleteById(r.getId());
+		r.setStatut(Resa.ANNULE.getVal());
+		this.repository.save(r);
 		this.email.envoyerEmail(motif, r);
 		return r;
 	}
@@ -159,6 +191,7 @@ public class ReservationVehiculeService {
 		r.setDateHeureDepart(dto.getDateHeureDepart());
 		r.setDateHeureRetour(dto.getDateHeureRetour());
 		r.setDemandeChauffeur(dto.getDemandeChauffeur());
+		r.setStatut(Resa.ACTIF.getVal());
 		return this.repository.save(r);
 	}
 
@@ -177,13 +210,63 @@ public class ReservationVehiculeService {
 	}
 
 	/**
-	 * Renvoie la liste des résas concernant un chauffeur
+	 * Renvoie la liste des résas ACTIVES concernant un chauffeur
 	 * 
 	 * @param id
 	 * @return
 	 */
 	public List<ReservationVehicule> listerChauffeur(Integer id) throws ListeVideException {
-		return this.safeReturnList(this.repository.findByChauffeurId(id));
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ARCHIVEES concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	public List<ReservationVehicule> listerChauffeurArchive(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ANNULEES concernant un chauffeur
+	 *
+	 * @param id
+	 * @return
+	 */
+	public List<ReservationVehicule> listerChauffeurAnnule(Integer id) throws ListeVideException {
+		return this.safeReturnList(this.repository.findByChauffeurIdAndStatutLike(id, Resa.ANNULE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ACTIF concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeActive(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ACTIF.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ANNULEES concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeAnnule(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ANNULE.getVal()));
+	}
+
+	/**
+	 * Renvoie la liste des résas ARCHIVEES concernant un véhicule de service
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	public List<ReservationVehicule> listerVehiculeArchive(Integer id) throws ListeVideException{
+		return this.safeReturnList(this.repository.findByVehiculeIdAndStatutLike(id, Resa.ARCHIVE.getVal()));
 	}
 
 	/**

@@ -114,5 +114,37 @@ public class ReservationCovoiturageController {
             return ResponseEntity.ok(this.covoiturageService.modifierReservationCovoiturage(resa));
     }
 
+    /**
+     * Renvoie la liste des resa covoiturage ACTIVEs d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/passager-active/{id}")
+    public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listerPassagerActive(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerParUtilisateurActive(Integer.parseInt(id)));
+    }
+
+    /**
+     * Renvoie la liste des resa covoiturage ACTIVEs d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/passager-archive/{id}")
+    public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listerPassagerAarchive(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerParUtilisateurArchive(Integer.parseInt(id)));
+    }
+
+    /**
+     * Renvoie la liste des resa covoiturage ANNULEES d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/passager-annule/{id}")
+    public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listerPassagerAnnule(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerParUtilisateurAnnule(Integer.parseInt(id)));
+    }
 
 }
