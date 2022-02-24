@@ -5,6 +5,7 @@ import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.DateDepasseeException;
+import dev.exception.ListeVideException;
 import dev.exception.NotFoundException;
 import dev.repositories.*;
 import org.springframework.data.domain.PageRequest;
@@ -51,12 +52,23 @@ public class AnnonceCovoiturageService {
     }
 
     /**
+     * Renvoie une liste si elle n'est pas vide, lance exception sinon
+     * @param
+     * @return List<AnnonceCovoiturage>
+     * @throws ListeVideException
+     */
+    private List<AnnonceCovoiturage> safeReturnList(List<AnnonceCovoiturage> l) throws ListeVideException {
+        if(l.isEmpty()) throw new ListeVideException("Aucune annonce covoiturage à renvoyer");
+        return l;
+    }
+
+    /**
      * Renvoie la liste de toutes les annonces de covoiturages, passées et à venir
      * @param  pr pagerequest
      * @return Liste d'annonces
      */
-    public List<AnnonceCovoiturage> listerCovoiturages(PageRequest pr){
-        return this.annonceCovoiturageRepository.findAll(pr).toList();
+    public List<AnnonceCovoiturage> listerCovoiturages(PageRequest pr) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findAll(pr).toList());
     }
 
     /**
@@ -130,8 +142,8 @@ public class AnnonceCovoiturageService {
      * findAll des annonces
      * @return
      */
-    public List<AnnonceCovoiturage> lister() {
-        return this.annonceCovoiturageRepository.findAll();
+    public List<AnnonceCovoiturage> lister() throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findAll());
     }
 
     /**
@@ -139,8 +151,8 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrga(Integer id) {
-        return this.annonceCovoiturageRepository.findByOrganisateurId(id);
+    public List<AnnonceCovoiturage> listerAnnoncesOrga(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurId(id));
     }
 
     /**
@@ -148,8 +160,10 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaAvenir(Integer id) {
-        return this.annonceCovoiturageRepository.findByOrganisateurIdAndDateHeureDepartGreaterThanEqual(id, LocalDate.now().atStartOfDay());
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaAvenir(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .findByOrganisateurIdAndDateHeureDepartGreaterThanEqual(id,
+                        LocalDate.now().atStartOfDay()));
     }
 
     /**
@@ -157,8 +171,10 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaHisto(Integer id) {
-        return this.annonceCovoiturageRepository.findByOrganisateurIdAndDateHeureDepartLessThan(id, LocalDate.now().atStartOfDay());
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaHisto(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .findByOrganisateurIdAndDateHeureDepartLessThan(id,
+                        LocalDate.now().atStartOfDay()));
     }
 
     /**
@@ -166,7 +182,10 @@ public class AnnonceCovoiturageService {
      * @param req covoiturage : adresse départ (nullable), adresse arrivée (nullable), date (nullable)
      * @return Liste des annonces satisfaisant les critères
      */
-    public List<AnnonceCovoiturage> rechercher(ReqCovoit req) {
-        return this.annonceCovoiturageRepository.rechercher(req.getAdresseDepart(), req.getAdresseArrivee(), req.getDate());
+    public List<AnnonceCovoiturage> rechercher(ReqCovoit req) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository
+                .rechercher(req.getAdresseDepart(),
+                        req.getAdresseArrivee(),
+                        req.getDate()));
     }
 }

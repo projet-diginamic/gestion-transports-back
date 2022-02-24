@@ -8,11 +8,13 @@ import dev.entites.Collaborateur;
 import dev.entites.reservation.ReservationCovoiturage;
 import dev.exception.CovoiturageCompletException;
 import dev.exception.DateDepasseeException;
+import dev.exception.ListeVideException;
 import dev.exception.NotFoundException;
 import dev.repositories.AnnonceCovoiturageRepository;
 import dev.repositories.CollaborateurRepository;
 import dev.repositories.ReservationCovoiturageRepository;
 import dev.utils.Email;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,28 @@ public class ReservationCovoiturageService {
         if(annonce.getNbPlaces() <= this.reservationCovoiturageRepository.calculerNbPlacesReservees(annonce.getId())){
             throw new CovoiturageCompletException("Plus de places disponibles sur ce covoiturage");
         }
+    }
+
+    /**
+     * Renvoie la liste si non vide, lance une exception sinon
+     * @param l
+     * @return
+     * @throws ListeVideException
+     */
+    private List<ReservationCovoiturage> safeReturnList(List<ReservationCovoiturage> l) throws ListeVideException {
+        if(l.isEmpty()) throw new ListeVideException("Pas de réservation covoiturage à renvoyer");
+        return l;
+    }
+
+    /**
+     * Renvoie la liste si non vide, lance une exception sinon
+     * @param l
+     * @return
+     * @throws ListeVideException
+     */
+    private List<ReservationCovoiturageSimpleDto> safeReturnListDto(List<ReservationCovoiturageSimpleDto> l) throws ListeVideException {
+        if(l.isEmpty()) throw new ListeVideException("Pas de réservation covoiturage à renvoyer");
+        return l;
     }
 
     /**
@@ -152,16 +176,16 @@ public class ReservationCovoiturageService {
      * @param pr
      * @return liste des résas
      */
-    public List<ReservationCovoiturage> listerToutesReservations(PageRequest pr) {
-        return this.reservationCovoiturageRepository.findAll(pr).toList();
+    public List<ReservationCovoiturage> listerToutesReservations(PageRequest pr) throws ListeVideException {
+        return this.safeReturnList(this.reservationCovoiturageRepository.findAll(pr).toList());
     }
 
     /**
      * Renvoie la liste de toutes les résas
      * @return
      */
-    public List<ReservationCovoiturage> lister(){
-        return this.reservationCovoiturageRepository.findAll();
+    public List<ReservationCovoiturage> lister() throws ListeVideException {
+        return this.safeReturnList(this.reservationCovoiturageRepository.findAll());
     }
 
     /**
@@ -169,9 +193,11 @@ public class ReservationCovoiturageService {
      * @param id_utilisateur
      * @return
      */
-    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurAvenir(Integer id_utilisateur) {
-        return this.listeReservationMapper.map(this.reservationCovoiturageRepository
-                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartGreaterThanEqual(id_utilisateur, LocalDate.now().atStartOfDay()));
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurAvenir(Integer id_utilisateur) throws ListeVideException {
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartGreaterThanEqual(id_utilisateur,
+                        LocalDate.now().atStartOfDay())));
     }
 
     /**
@@ -179,9 +205,11 @@ public class ReservationCovoiturageService {
      * @param id_utilisateur
      * @return
      */
-    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurHisto(Integer id_utilisateur) {
-        return this.listeReservationMapper.map(this.reservationCovoiturageRepository
-                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartLessThan(id_utilisateur, LocalDate.now().atStartOfDay()));
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateurHisto(Integer id_utilisateur) throws ListeVideException {
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                .findByPassagerIdAndAnnonceCovoiturageDateHeureDepartLessThan(id_utilisateur,
+                        LocalDate.now().atStartOfDay())));
     }
 
     /**
@@ -189,8 +217,10 @@ public class ReservationCovoiturageService {
      * @param id_utilisateur
      * @return
      */
-    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateur(Integer id_utilisateur) {
-        return this.listeReservationMapper.map(this.reservationCovoiturageRepository.listerReservationsParUtilisateur(id_utilisateur));
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsParUtilisateur(Integer id_utilisateur) throws ListeVideException {
+        return this.safeReturnListDto(this.listeReservationMapper
+                .map(this.reservationCovoiturageRepository
+                        .listerReservationsParUtilisateur(id_utilisateur)));
     }
 
 }

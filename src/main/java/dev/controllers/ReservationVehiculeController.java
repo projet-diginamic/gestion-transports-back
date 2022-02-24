@@ -2,6 +2,7 @@ package dev.controllers;
 
 import java.util.List;
 
+import dev.exception.ListeVideException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +38,7 @@ public class ReservationVehiculeController {
 	 */
 	@GetMapping
 	public ResponseEntity<List<ReservationVehicule>> listerReservationsVehicules(@RequestParam Integer start,
-			@RequestParam Integer size) {
+			@RequestParam Integer size) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehicules(PageRequest.of(start, size)));
 	}
 
@@ -47,7 +48,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("/all")
-	public ResponseEntity<List<ReservationVehicule>> lister() {
+	public ResponseEntity<List<ReservationVehicule>> lister() throws ListeVideException {
 		return ResponseEntity.ok(this.service.lister());
 	}
 
@@ -66,7 +67,7 @@ public class ReservationVehiculeController {
 	 * Renvoie la liste des résas véhicule d'un utilisateur
 	 */
 	@GetMapping("/utilisateur/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerMesResas(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerMesResas(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerMesResas(Integer.parseInt(id)));
 	}
 
@@ -77,7 +78,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("utilisateur-avenir/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerMesResasAVenir(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasAVenir(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerMesResasAVenir(Integer.parseInt(id)));
 	}
 
@@ -88,7 +89,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("utilisateur-histo/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerMesResasHisto(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasHisto(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerMesResasHisto(Integer.parseInt(id)));
 	}
 
@@ -132,7 +133,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("/chauffeur/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerChauffeur(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerChauffeur(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerChauffeur(Integer.parseInt(id)));
 	}
 
@@ -143,7 +144,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("/vehicule/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerVehicule(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerVehicule(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehicule(Integer.parseInt(id)));
 	}
 
@@ -155,7 +156,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("/vehicule-histo/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerVehiculeHisto(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerVehiculeHisto(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehiculeHisto(Integer.parseInt(id)));
 	}
 
@@ -167,7 +168,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("/vehicule-avenir/{id}")
-	public ResponseEntity<List<ReservationVehicule>> listerVehiculeAvenir(@PathVariable String id) {
+	public ResponseEntity<List<ReservationVehicule>> listerVehiculeAvenir(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerVehiculeAvenir(Integer.parseInt(id)));
 	}
 
@@ -189,7 +190,7 @@ public class ReservationVehiculeController {
 	 * @return
 	 */
 	@GetMapping("en-attente-chauffeur")
-	public ResponseEntity<List<ReservationVehicule>> enAttente() {
+	public ResponseEntity<List<ReservationVehicule>> enAttente() throws ListeVideException {
 		return ResponseEntity.ok(this.service.enAttente());
 	}
 

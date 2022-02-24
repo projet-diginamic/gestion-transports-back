@@ -2,6 +2,7 @@ package dev.controllers;
 
 import dev.dto.reservation.covoiturage.*;
 import dev.entites.reservation.ReservationCovoiturage;
+import dev.exception.ListeVideException;
 import dev.services.ReservationCovoiturageService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class ReservationCovoiturageController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<ReservationCovoiturage>> listerToutesReservations(@RequestParam Integer start, @RequestParam Integer size){
+    public ResponseEntity<List<ReservationCovoiturage>> listerToutesReservations(@RequestParam Integer start, @RequestParam Integer size) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerToutesReservations(PageRequest.of(start,size)));
     }
 
@@ -38,7 +39,7 @@ public class ReservationCovoiturageController {
      * @return
      */
     @GetMapping("/all")
-    public ResponseEntity<List<ReservationCovoiturage>> lister(){
+    public ResponseEntity<List<ReservationCovoiturage>> lister() throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.lister());
     }
 
@@ -48,7 +49,7 @@ public class ReservationCovoiturageController {
      * @return
      */
     @GetMapping("passager/{id_utilisateur}")
-    public List<ReservationCovoiturageSimpleDto> afficherReservations(@PathVariable String id_utilisateur){
+    public List<ReservationCovoiturageSimpleDto> afficherReservations(@PathVariable String id_utilisateur) throws ListeVideException {
         return this.covoiturageService.afficherReservationsParUtilisateur(Integer.parseInt(id_utilisateur));
     }
 
@@ -58,7 +59,7 @@ public class ReservationCovoiturageController {
      * @return
      */
     @GetMapping("passager-avenir/{id_utilisateur}")
-    public List<ReservationCovoiturageSimpleDto> afficherReservationsAvenir(@PathVariable String id_utilisateur){
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsAvenir(@PathVariable String id_utilisateur) throws ListeVideException {
         return this.covoiturageService.afficherReservationsParUtilisateurAvenir(Integer.parseInt(id_utilisateur));
     }
 
@@ -68,7 +69,7 @@ public class ReservationCovoiturageController {
      * @return
      */
     @GetMapping("passager-histo/{id_utilisateur}")
-    public List<ReservationCovoiturageSimpleDto> afficherReservationsHisto(@PathVariable String id_utilisateur){
+    public List<ReservationCovoiturageSimpleDto> afficherReservationsHisto(@PathVariable String id_utilisateur) throws ListeVideException {
         return this.covoiturageService.afficherReservationsParUtilisateurHisto(Integer.parseInt(id_utilisateur));
     }
 
