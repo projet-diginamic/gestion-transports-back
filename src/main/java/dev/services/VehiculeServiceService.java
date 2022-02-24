@@ -1,11 +1,11 @@
 package dev.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import dev.exception.*;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class VehiculeServiceService {
 	 * @param pr PageRequest
 	 * @return Liste véhicules service
 	 */
-	public Page<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) throws ListeVideException {
+	public List<VehiculeServiceListeDto> afficherVehiculesService(PageRequest pr) throws ListeVideException {
 		if (this.vehiculeServiceRepository.listerVehicules(pr).iterator().hasNext()) {
 			return this.vehiculeServiceRepository.listerVehicules(pr);
 		} else {
@@ -54,22 +54,21 @@ public class VehiculeServiceService {
 	 * @return
 	 * @throws ListeVideException
 	 */
-	public Page<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) throws ListeVideException {
+	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) throws ListeVideException {
 		if (this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr).iterator().hasNext()) {
-			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);//pr
+			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
 		} else {
 			throw new ListeVideException("Actuellement, aucun véhicule n'a le statut 'En service'");
 		}
 
-//		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
-
 	}
 
 	/**
-	 * Méthode pour créer un nouveau véhicule de service
+	 * Méthode pour créer un véhicule de service
 	 * @param creerVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
+	 * @throws FormatImmatriculationException
 	 */
 	@Transactional
 	public ResponseEntity<?> creerVehiculeService(CreerVehiculeServiceDto creerVehiculeServiceDto)
@@ -102,14 +101,15 @@ public class VehiculeServiceService {
 	}
 
 	/**
-	 * Méthode qui permet de modifier les informations d'un véhicule de service
+	 * Méthode pour modifier un véhicule de service
 	 * @param modifierVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
+	 * @throws FormatImmatriculationException
 	 */
 	@Transactional
 	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
-			throws NotFoundException {
+			throws NotFoundException, FormatImmatriculationException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
 				.findById(modifierVehiculeServiceDto.getId());
@@ -128,7 +128,13 @@ public class VehiculeServiceService {
 			if (optionalCategorie.isPresent()) {
 
 				vehiculeService.setCategorie(optionalCategorie.get());
-				vehiculeService.setImmatriculation(modifierVehiculeServiceDto.getImmatriculation());
+
+				if (modifierVehiculeServiceDto.getImmatriculation().matches("^[A-Z]{2}[-][0-9]{3}[-][A-Z]{2}$")) {
+					vehiculeService.setImmatriculation(modifierVehiculeServiceDto.getImmatriculation());
+				} else {
+					throw new FormatImmatriculationException("La plaque d'immatriculation renseignée n'a pas le bon format");
+				}
+
 				vehiculeService.setMarque(modifierVehiculeServiceDto.getMarque());
 				vehiculeService.setModele(modifierVehiculeServiceDto.getModele());
 				vehiculeService.setNbPlaces(modifierVehiculeServiceDto.getNbPlaces());

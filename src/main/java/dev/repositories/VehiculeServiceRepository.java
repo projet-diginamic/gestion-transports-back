@@ -11,15 +11,17 @@ import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.VehiculeService;
 
+import java.util.List;
+
 @Repository
 public interface VehiculeServiceRepository extends JpaRepository<VehiculeService, Integer> {
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto(v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v "
 			+ "inner join v.categorie c ")
-	Page<VehiculeServiceListeDto> listerVehicules(Pageable pageable);
+	List<VehiculeServiceListeDto> listerVehicules(Pageable pageable);
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur(v.id, v.marque, v.modele, v.immatriculation, v.photo) from VehiculeService v where v.statut = 'En service'")
-	Page<VehiculeServiceListeDtoCollaborateur> listerVehiculesCollaborateur(Pageable pageable);
+	List<VehiculeServiceListeDtoCollaborateur> listerVehiculesCollaborateur(Pageable pageable);
 
 	@Query("select new dev.dto.vehiculeService.VehiculeServiceListeDto"
 			+ " (v.id, v.immatriculation, v.marque, v.modele, v.photo, v.categorie.nom) from VehiculeService v inner join v.categorie c where v.marque like %:marque%")
