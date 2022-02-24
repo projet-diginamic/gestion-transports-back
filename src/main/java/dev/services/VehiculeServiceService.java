@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
-import dev.dto.vehiculeService.ReqVehicule;
+import dev.dto.vehiculeService.ReqVehiculeServiceDate;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
@@ -78,7 +78,7 @@ public class VehiculeServiceService {
 	 * @param req
 	 * @return Liste des annonces satisfaisant les critères
 	 */
-	public List<VehiculeService> rechercherEnServiceDateLibre(ReqVehicule req) {
+	public List<VehiculeService> rechercherEnServiceDateLibre(ReqVehiculeServiceDate req) {
 		return this.vehiculeServiceRepository.rechercherEnServiceDateLibre(req.getDate());
 	}
 

@@ -2,10 +2,10 @@ package dev.dto.vehiculeService;
 
 import java.time.LocalDate;
 
-public class ReqVehicule {
+public class ReqVehiculeServiceDate {
 	private LocalDate date;
 
-	public ReqVehicule(String date) {
+	public ReqVehiculeServiceDate(String date) {
 		super();
 		if (date != null)
 			this.date = LocalDate.parse(date);
