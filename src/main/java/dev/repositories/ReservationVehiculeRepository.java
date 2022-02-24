@@ -20,9 +20,13 @@ public interface ReservationVehiculeRepository extends JpaRepository<Reservation
 
 	List<ReservationVehicule> findByPassagerIdAndDateHeureDepartLessThan(Integer id, LocalDateTime d);
 
-	List<ReservationVehicule> findByChauffeurId(Integer id);
+	List<ReservationVehicule> findByPassagerIdAndStatutLike(Integer id, String statut);
+
+	List<ReservationVehicule> findByChauffeurIdAndStatutLike(Integer id, String statut);
 
 	List<ReservationVehicule> findByVehiculeId(Integer id);
+
+	List<ReservationVehicule> findByVehiculeIdAndStatutLike(Integer id, String statut);
 
 	List<ReservationVehicule> findByVehiculeIdAndDateHeureDepartLessThan(Integer id, LocalDateTime d);
 

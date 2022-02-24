@@ -47,6 +47,36 @@ public class AnnonceCovoiturageController {
     }
 
     /**
+     * Liste non paginée de toutes les annonces statut OUVERT
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/all-ouvert")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerActives() throws ListeVideException{
+        return ResponseEntity.ok(this.covoiturageService.listerActives());
+    }
+
+    /**
+     * Liste non paginée de toutes les annonces statut ARCHIVE
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/all-archive")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerArchives() throws ListeVideException{
+        return ResponseEntity.ok(this.covoiturageService.listerArchives());
+    }
+
+    /**
+     * Liste non paginée de toutes les annonces
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/all-annule")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnule() throws ListeVideException{
+        return ResponseEntity.ok(this.covoiturageService.listerAnnule());
+    }
+
+    /**
      * Annonce par id
      * @param id
      * @return
@@ -118,7 +148,7 @@ public class AnnonceCovoiturageController {
     }
 
     /**
-     * Rechercher une annonce filtrée par critères (tous nullables)
+     * Rechercher une annonce statut OUVERT filtrée par critères (tous nullables)
      * @param  {adresseDepart, adresseArrivee, date}
      * @return Liste des annonces satisfaisant aux critères
      */

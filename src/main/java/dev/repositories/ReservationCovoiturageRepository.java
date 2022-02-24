@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ReservationCovoiturageRepository extends JpaRepository<ReservationCovoiturage, Integer> {
 
-    @Query("SELECT COUNT(*) FROM ReservationCovoiturage r WHERE r.annonceCovoiturage.id=:id")
+    @Query("SELECT COUNT(*) FROM ReservationCovoiturage r WHERE r.annonceCovoiturage.id=:id AND r.statut='ACTIF'")
     Integer calculerNbPlacesReservees(@Param("id") Integer id);
 
     @Query("SELECT r FROM ReservationCovoiturage r WHERE r.passager.id=:id ")
@@ -21,4 +21,6 @@ public interface ReservationCovoiturageRepository extends JpaRepository<Reservat
     List<ReservationCovoiturage> findByPassagerIdAndAnnonceCovoiturageDateHeureDepartGreaterThanEqual(Integer id, LocalDateTime date);
 
     List<ReservationCovoiturage> findByPassagerIdAndAnnonceCovoiturageDateHeureDepartLessThan(Integer id, LocalDateTime date);
+
+    List<ReservationCovoiturage> findByPassagerIdAndStatutLike(Integer id, String statut);
 }
