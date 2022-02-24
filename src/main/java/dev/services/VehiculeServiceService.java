@@ -1,11 +1,10 @@
 package dev.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import dev.exception.*;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -14,10 +13,16 @@ import org.springframework.stereotype.Service;
 
 import dev.dto.vehiculeService.CreerVehiculeServiceDto;
 import dev.dto.vehiculeService.ModifierVehiculeServiceDto;
+import dev.dto.vehiculeService.ReqVehicule;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
+import dev.exception.FormatImmatriculationException;
+import dev.exception.ListeVideException;
+import dev.exception.NotFoundException;
+import dev.exception.NotFoundImmatriculationException;
+import dev.exception.NotFoundMarqueException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;
 
@@ -36,6 +41,7 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui renvoie une liste de véhicules de service
+	 * 
 	 * @param pr PageRequest
 	 * @return Liste véhicules service
 	 */
@@ -49,24 +55,36 @@ public class VehiculeServiceService {
 	}
 
 	/**
-	 * Méthode qui renvoie une liste de véhicules de service avec statut en service - A destination des collaborateurs
+	 * Méthode qui renvoie une liste de véhicules de service avec statut en service
+	 * - A destination des collaborateurs
+	 * 
 	 * @param pr
 	 * @return
 	 * @throws ListeVideException
 	 */
-	public Page<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) throws ListeVideException {
+	public Page<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr)
+			throws ListeVideException {
 		if (this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr).iterator().hasNext()) {
-			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);//pr
+			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);// pr
 		} else {
 			throw new ListeVideException("Actuellement, aucun véhicule n'a le statut 'En service'");
 		}
+	}
 
-//		return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
-
+	/**
+	 * Méthode pour rechercher un véhicule au statut "en service" et libre à la date
+	 * indiquée
+	 * 
+	 * @param req
+	 * @return Liste des annonces satisfaisant les critères
+	 */
+	public List<VehiculeService> rechercherEnServiceDateLibre(ReqVehicule req) {
+		return this.vehiculeServiceRepository.rechercherEnServiceDateLibre(req.getDate());
 	}
 
 	/**
 	 * Méthode pour créer un nouveau véhicule de service
+	 * 
 	 * @param creerVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
@@ -103,6 +121,7 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet de modifier les informations d'un véhicule de service
+	 * 
 	 * @param modifierVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
@@ -152,7 +171,9 @@ public class VehiculeServiceService {
 	}
 
 	/**
-	 * Méthode qui permet d'archiver un véhicule (modification du statut en "Hors service"
+	 * Méthode qui permet d'archiver un véhicule (modification du statut en "Hors
+	 * service"
+	 * 
 	 * @param id
 	 * @return
 	 * @throws NotFoundException
@@ -179,6 +200,7 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet d'afficher les détails d'un véhicule de service
+	 * 
 	 * @param id
 	 * @return
 	 * @throws NotFoundException
@@ -202,6 +224,7 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet de filtrer les véhicules par marque
+	 * 
 	 * @param marque
 	 * @return
 	 */
@@ -216,17 +239,18 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet de filtrer les véhicules par immatriculation
+	 * 
 	 * @param immatriculation
 	 * @return
 	 * @throws NotFoundImmatriculationException
 	 */
-	public Iterable<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation) throws NotFoundImmatriculationException {
+	public Iterable<VehiculeServiceListeDto> vehiculeParImmatriculation(String immatriculation)
+			throws NotFoundImmatriculationException {
 		if (this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation).iterator().hasNext()) {
 			return this.vehiculeServiceRepository.rechercherParImmatriculation(immatriculation);
 		} else {
 			throw new NotFoundImmatriculationException("Aucune immatriculation ne correspond à votre recherche");
 		}
 	}
-
 
 }
