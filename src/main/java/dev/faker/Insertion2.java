@@ -152,7 +152,7 @@ public class Insertion2 implements CommandLineRunner {
         IntStream.range(0,NB_CHAUFFEURS-1).forEach(
                 (x) -> {
                     ReservationVehicule rv = new ReservationVehicule();
-                    rv.setStatut(Resa.ARCHIVE.getVal());
+                    rv.setStatut(Resa.ACTIF.getVal());
                     rv.setChauffeur(this.chauffeurRepository.getById(x+1));
                     rv.setDemandeChauffeur(true);
                     rv.setDateHeureDepart(LocalDateTime.ofInstant((f.date().future(30, TimeUnit.DAYS)).toInstant(), ZoneId.of("UTC+1")));
@@ -169,7 +169,7 @@ public class Insertion2 implements CommandLineRunner {
         IntStream.range(0,NB_RESA).forEach(
                 (x) -> {
                     ReservationVehicule rv = new ReservationVehicule();
-                    rv.setStatut(Resa.ARCHIVE.getVal());
+                    rv.setStatut(Resa.ACTIF.getVal());
                     rv.setDemandeChauffeur(true);
                     rv.setDateHeureDepart(LocalDateTime.ofInstant((f.date().future(30, TimeUnit.DAYS)).toInstant(), ZoneId.of("UTC+1")));
                     rv.setDateHeureRetour(rv.getDateHeureDepart().plusHours(6));
@@ -185,7 +185,7 @@ public class Insertion2 implements CommandLineRunner {
         IntStream.range(0,NB_RESA).forEach(
                 (x) -> {
                     ReservationVehicule rv = new ReservationVehicule();
-                    rv.setStatut(Resa.ARCHIVE.getVal());
+                    rv.setStatut(Resa.ACTIF.getVal());
                     rv.setDemandeChauffeur(false);
                     rv.setDateHeureDepart(LocalDateTime.ofInstant((f.date().future(30, TimeUnit.DAYS)).toInstant(), ZoneId.of("UTC+1")));
                     rv.setDateHeureRetour(rv.getDateHeureDepart().plusHours(6));
