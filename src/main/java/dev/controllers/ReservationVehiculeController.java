@@ -134,9 +134,7 @@ public class ReservationVehiculeController {
 	 */
 	@GetMapping("utilisateur-archive-annule/{id}")
 	public ResponseEntity<List<ReservationVehicule>> listerMesResasAA(@PathVariable String id) throws  ListeVideException{
-		List<ReservationVehicule> l = this.service.listerMesResasArchives(Integer.parseInt(id));
-		l.addAll(this.service.listerChauffeurAnnule(Integer.parseInt(id)));
-		return ResponseEntity.ok(l);
+		return ResponseEntity.ok(this.service.listerMesResasAA(Integer.parseInt(id)));
 	}
 
 	/**
