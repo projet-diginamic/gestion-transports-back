@@ -155,10 +155,8 @@ public class ReservationCovoiturageController {
      * @throws ListeVideException
      */
     @GetMapping("/passager-archive-annule/{id}")
-    public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listResponsePassagerAA(@PathVariable String id) throws  ListeVideException{
-        List<ReservationCovoiturageSimpleDto> l = this.covoiturageService.listerParUtilisateurArchive(Integer.parseInt(id));
-        l.addAll(this.covoiturageService.listerParUtilisateurAnnule(Integer.parseInt(id)));
-        return ResponseEntity.ok(l);
+    public ResponseEntity<List<ReservationCovoiturage>> listResponsePassagerAA(@PathVariable String id) throws  ListeVideException{
+        return ResponseEntity.ok(this.covoiturageService.listerParUtilisateurAA(Integer.parseInt(id)));
     }
 
 }

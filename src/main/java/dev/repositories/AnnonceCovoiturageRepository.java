@@ -35,4 +35,5 @@ public interface AnnonceCovoiturageRepository extends JpaRepository<AnnonceCovoi
 
     List<AnnonceCovoiturage> findByOrganisateurIdAndStatutLike(Integer id, String statut);
 
+    List<AnnonceCovoiturage> findByOrganisateurIdAndStatutNotLike(Integer id, String val);
 }
