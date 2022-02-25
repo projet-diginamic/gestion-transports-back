@@ -15,6 +15,16 @@ public class ReservationCovoiturageSimpleDto {
 
     private AdresseDepart adresseDepart;
 
+    private String statut;
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
     public Integer getId() {
         return id;
     }
