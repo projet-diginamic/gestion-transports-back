@@ -219,19 +219,19 @@ public class VehiculeServiceService {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public ResponseEntity<?> detailVehiculeService(Integer id) throws NotFoundException {
+	public Optional<VehiculeService> detailVehiculeService(Integer id) throws NotFoundException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
 
 		if (optionalVehiculeService.isPresent()) {
 			// véhicule trouvé
-			VehiculeService vehiculeService = optionalVehiculeService.get();
+			// VehiculeService vehiculeService = optionalVehiculeService.get();
 
-			return ResponseEntity.ok(vehiculeService);
+			return optionalVehiculeService;
 
 		} else {
 			// véhicule non trouvé
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("véhicule non trouvé");
+			throw new NotFoundException("Véhicule non trouvé");
 		}
 
 	}
