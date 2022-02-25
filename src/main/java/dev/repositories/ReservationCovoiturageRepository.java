@@ -23,4 +23,6 @@ public interface ReservationCovoiturageRepository extends JpaRepository<Reservat
     List<ReservationCovoiturage> findByPassagerIdAndAnnonceCovoiturageDateHeureDepartLessThan(Integer id, LocalDateTime date);
 
     List<ReservationCovoiturage> findByPassagerIdAndStatutLike(Integer id, String statut);
+
+    List<ReservationCovoiturage> findByPassagerIdAndStatutNotLike(Integer id, String val);
 }

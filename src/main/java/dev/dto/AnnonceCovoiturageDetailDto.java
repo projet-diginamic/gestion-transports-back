@@ -27,7 +27,17 @@ public class AnnonceCovoiturageDetailDto {
 
     private Integer nbResas;
 
+    private String statut;
+
     private List<Collaborateur> passagers;
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
 
     public Integer getId() {
         return id;

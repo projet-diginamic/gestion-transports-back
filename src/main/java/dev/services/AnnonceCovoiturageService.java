@@ -290,4 +290,17 @@ public class AnnonceCovoiturageService {
                         this.annonceCovoiturageRepository
                                 .findByOrganisateurIdAndStatutLike(id, Annonce.ANNULE.getVal())));
     }
+
+    /**
+     * Renvoie toutes les annonces ARCHIVE ET ANNULE d'un organisateur
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaAA(Integer id) throws ListeVideException{
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                                .findByOrganisateurIdAndStatutNotLike(id, Annonce.OUVERT.getVal())));
+    }
 }

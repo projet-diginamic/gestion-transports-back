@@ -154,9 +154,7 @@ public class AnnonceCovoiturageController {
      */
     @GetMapping("/orga-archive-annule/{id}")
     public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaAA(@PathVariable String id) throws ListeVideException {
-        List<AnnonceCovoiturageDetailDto> l = this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id));
-        l.addAll(this.covoiturageService.listerAnnoncesOrgaArchive(Integer.parseInt(id)));
-        return ResponseEntity.ok(l);
+        return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaAA(Integer.parseInt(id)));
     }
 
     /**

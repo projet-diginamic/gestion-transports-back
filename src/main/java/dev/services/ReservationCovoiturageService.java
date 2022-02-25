@@ -258,4 +258,9 @@ public class ReservationCovoiturageService {
     }
 
 
+    public List<ReservationCovoiturage> listerParUtilisateurAA(Integer id) throws ListeVideException {
+        return this.safeReturnList(
+                this.reservationCovoiturageRepository
+                        .findByPassagerIdAndStatutNotLike(id,Resa.ACTIF.getVal()));
+    }
 }
