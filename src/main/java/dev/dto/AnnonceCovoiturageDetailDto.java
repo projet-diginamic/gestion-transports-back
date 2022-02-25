@@ -11,6 +11,8 @@ import java.util.List;
 
 public class AnnonceCovoiturageDetailDto {
 
+    private Integer id;
+
     private LocalDateTime dateHeureDepart;
 
     private Utilisateur organisateur;
@@ -26,6 +28,14 @@ public class AnnonceCovoiturageDetailDto {
     private Integer nbResas;
 
     private List<Collaborateur> passagers;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public LocalDateTime getDateHeureDepart() {
         return dateHeureDepart;

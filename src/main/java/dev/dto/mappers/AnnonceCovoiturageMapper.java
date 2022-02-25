@@ -11,6 +11,7 @@ public interface AnnonceCovoiturageMapper {
 
     default AnnonceCovoiturageDetailDto toAnnonceCovoiturageDetailDto(AnnonceCovoiturage a){
         AnnonceCovoiturageDetailDto dto = new AnnonceCovoiturageDetailDto();
+        dto.setId(a.getId());
         dto.setDateHeureDepart(a.getDateHeureDepart());
         dto.setAdresseDepart(a.getAdresseDepart());
         dto.setAdresseArrivee(a.getAdresseArrivee());
