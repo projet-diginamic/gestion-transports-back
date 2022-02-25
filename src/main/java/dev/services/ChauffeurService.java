@@ -1,14 +1,12 @@
 package dev.services;
 
 import dev.dto.TauxOccupation;
-import dev.entites.reservation.ReservationVehicule;
 import dev.repositories.ReservationVehiculeRepository;
 import dev.utils.Resa;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,7 +32,7 @@ public class ChauffeurService {
                         d1.atStartOfDay(),
                         d2.atStartOfDay()
                 ).stream()
-                .map(x -> {return new TauxOccupation(x);})
+                .map(TauxOccupation::new)
                 .sorted()
                 .collect(Collectors.toList());
 
@@ -44,7 +42,7 @@ public class ChauffeurService {
 
         return Stream.iterate(d1, d -> d.plusDays(1))
                 .limit(ChronoUnit.DAYS.between(d1,d2))
-                .map(x -> { return new TauxOccupation(x);})
+                .map(TauxOccupation::new)
                 .map(x -> dates.indexOf(x.getDate()) == -1 ? x : liste.get(dates.indexOf(x.getDate())))
                 .collect(Collectors.toList());
     }
