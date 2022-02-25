@@ -221,4 +221,31 @@ public class AnnonceCovoiturageService {
         return this.safeReturnList(this.annonceCovoiturageRepository
                 .findByStatutLike(Annonce.ANNULE.getVal()));
     }
+
+    /**
+     * Renvoie toutes les annonces OUVERT d'un organisateur
+     * @param id
+     * @return Liste des annonces
+     */
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaActif(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.OUVERT.getVal()));
+    }
+
+    /**
+     * Renvoie toutes les annonces ARCHIVE d'un organisateur
+     * @param id
+     * @return Liste des annonces
+     */
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaArchive(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.ARCHIVE.getVal()));
+    }
+
+    /**
+     * Renvoie toutes les annonces ANNULE d'un organisateur
+     * @param id
+     * @return Liste des annonces
+     */
+    public List<AnnonceCovoiturage> listerAnnoncesOrgaAnnule(Integer id) throws ListeVideException {
+        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.ANNULE.getVal()));
+    }
 }

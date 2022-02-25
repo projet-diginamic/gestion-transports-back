@@ -117,6 +117,48 @@ public class AnnonceCovoiturageController {
     }
 
     /**
+     * Annonces par organisateur statut OUVERT
+     * @param id
+     * @return
+     */
+    @GetMapping("/orga-ouvert/{id}")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaActif(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaActif(Integer.parseInt(id)));
+    }
+
+    /**
+     * Annonces par organisateur statut ARCHIVE
+     * @param id
+     * @return
+     */
+    @GetMapping("/orga-archive/{id}")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaArchive(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaArchive(Integer.parseInt(id)));
+    }
+
+    /**
+     * Annonces par organisateur statut ANNULE
+     * @param id
+     * @return
+     */
+    @GetMapping("/orga-annule/{id}")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaAnnule(@PathVariable String id) throws ListeVideException {
+        return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id)));
+    }
+
+    /**
+     * Annonces par organisateur statut ANNULE ET ARCHIVE
+     * @param id
+     * @return
+     */
+    @GetMapping("/orga-archive-annule/{id}")
+    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaAA(@PathVariable String id) throws ListeVideException {
+        List<AnnonceCovoiturage> l = this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id));
+        l.addAll(this.covoiturageService.listerAnnoncesOrgaArchive(Integer.parseInt(id)));
+        return ResponseEntity.ok(l);
+    }
+
+    /**
      * Insérer une annonce
      * @param annonce dto
      * @return
