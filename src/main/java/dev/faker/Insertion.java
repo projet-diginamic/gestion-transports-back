@@ -9,12 +9,14 @@ import dev.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
 import java.util.stream.IntStream;
 
-//@Component
+@Component
+@Profile("insertion")
 public class Insertion implements CommandLineRunner {
 
     @Autowired
@@ -90,7 +92,7 @@ public class Insertion implements CommandLineRunner {
                 (x) -> {
                     Adresse a = new Adresse();
                     a.setNumeroRue(f.address().streetAddressNumber());
-                    a.setRue(f.address().streetAddress());
+                    a.setRue(f.address().streetName());
                     a.setCodePostal(f.address().zipCode());
                     a.setVille(f.address().cityName());
                     AdresseDepart ad = new AdresseDepart();

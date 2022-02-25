@@ -10,6 +10,7 @@ import dev.utils.Annonce;
 import dev.utils.Resa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-//@Component
+@Component
+@Profile("insertion")
 @Transactional
 public class Insertion2 implements CommandLineRunner {
 
@@ -74,8 +76,6 @@ public class Insertion2 implements CommandLineRunner {
                     ac.setDateHeureDepart(LocalDateTime.ofInstant((f.date().past(30, TimeUnit.DAYS)).toInstant(), ZoneId.of("UTC+1")));
                     ac.setAdresseDepart(this.repoAD.getById(r.nextInt(NB_ADDR-1)+1));
                     ac.setAdresseArrivee(this.repoAA.getById(r.nextInt(NB_ADDR-1)+1));
-                    System.out.println("> "+ac);
-//                    System.out.println(">>> "+ac.getAdresseDepart());
                     this.aCRepo.save(ac);
                 }
         );
