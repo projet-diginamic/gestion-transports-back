@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.dto.AnnonceCovoiturageDetailDto;
 import dev.dto.AnnonceCovoiturageDto;
 import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
@@ -33,7 +34,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<AnnonceCovoiturage>> listerCovoiturages(@RequestParam Integer start, @RequestParam Integer size) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerCovoiturages(@RequestParam Integer start, @RequestParam Integer size) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerCovoiturages(PageRequest.of(start,size)));
     }
 
@@ -42,7 +43,7 @@ public class AnnonceCovoiturageController {
      * @return response ok liste annonces
      */
     @GetMapping("/all")
-    public ResponseEntity<List<AnnonceCovoiturage>> lister() throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> lister() throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.lister());
     }
 
@@ -52,7 +53,7 @@ public class AnnonceCovoiturageController {
      * @throws ListeVideException
      */
     @GetMapping("/all-ouvert")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerActives() throws ListeVideException{
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerActives() throws ListeVideException{
         return ResponseEntity.ok(this.covoiturageService.listerActives());
     }
 
@@ -62,7 +63,7 @@ public class AnnonceCovoiturageController {
      * @throws ListeVideException
      */
     @GetMapping("/all-archive")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerArchives() throws ListeVideException{
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerArchives() throws ListeVideException{
         return ResponseEntity.ok(this.covoiturageService.listerArchives());
     }
 
@@ -72,7 +73,7 @@ public class AnnonceCovoiturageController {
      * @throws ListeVideException
      */
     @GetMapping("/all-annule")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnule() throws ListeVideException{
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnule() throws ListeVideException{
         return ResponseEntity.ok(this.covoiturageService.listerAnnule());
     }
 
@@ -92,7 +93,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-avenir/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaAvenir(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaAvenir(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaAvenir(Integer.parseInt(id)));
     }
 
@@ -102,7 +103,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-histo/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaHisto(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaHisto(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaHisto(Integer.parseInt(id)));
     }
 
@@ -112,7 +113,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrga(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrga(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrga(Integer.parseInt(id)));
     }
 
@@ -122,7 +123,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-ouvert/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaActif(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaActif(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaActif(Integer.parseInt(id)));
     }
 
@@ -132,7 +133,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-archive/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaArchive(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaArchive(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaArchive(Integer.parseInt(id)));
     }
 
@@ -142,7 +143,7 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-annule/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaAnnule(@PathVariable String id) throws ListeVideException {
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaAnnule(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id)));
     }
 
@@ -152,8 +153,8 @@ public class AnnonceCovoiturageController {
      * @return
      */
     @GetMapping("/orga-archive-annule/{id}")
-    public ResponseEntity<List<AnnonceCovoiturage>> listerAnnoncesOrgaAA(@PathVariable String id) throws ListeVideException {
-        List<AnnonceCovoiturage> l = this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id));
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> listerAnnoncesOrgaAA(@PathVariable String id) throws ListeVideException {
+        List<AnnonceCovoiturageDetailDto> l = this.covoiturageService.listerAnnoncesOrgaAnnule(Integer.parseInt(id));
         l.addAll(this.covoiturageService.listerAnnoncesOrgaArchive(Integer.parseInt(id)));
         return ResponseEntity.ok(l);
     }
@@ -195,7 +196,7 @@ public class AnnonceCovoiturageController {
      * @return Liste des annonces satisfaisant aux critères
      */
     @GetMapping("rechercher")
-    public ResponseEntity<List<AnnonceCovoiturage>> rechercherCovoit(@RequestParam(required = false) String date,
+    public ResponseEntity<List<AnnonceCovoiturageDetailDto>> rechercherCovoit(@RequestParam(required = false) String date,
                                                                      @RequestParam(required = false) String dep,
                                                                      @RequestParam(required = false) String arr) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.rechercher(new ReqCovoit(dep,arr,date)));

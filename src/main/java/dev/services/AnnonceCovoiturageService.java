@@ -1,6 +1,8 @@
 package dev.services;
 
+import dev.dto.AnnonceCovoiturageDetailDto;
 import dev.dto.AnnonceCovoiturageDto;
+import dev.dto.mappers.ListeAnnonceMapper;
 import dev.dto.reservation.covoiturage.ReqCovoit;
 import dev.entites.AnnonceCovoiturage;
 import dev.exception.CovoiturageCompletException;
@@ -29,8 +31,9 @@ public class AnnonceCovoiturageService {
     private AdresseDepartRepository adresseDepartRepository;
     private AdresseArriveeRepository adresseArriveeRepository;
     private VehiculeCovoiturageRepository vehiculeCovoiturageRepository;
+    private ListeAnnonceMapper listeAnnonceMapper;
 
-    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository, ReservationCovoiturageRepository reservationCovoiturageRepository, ReservationCovoiturageService reservationCovoiturageService, UtilisateurRepository utilisateurRepository, AdresseDepartRepository adresseDepartRepository, AdresseArriveeRepository adresseArriveeRepository, VehiculeCovoiturageRepository vehiculeCovoiturageRepository){
+    public AnnonceCovoiturageService(AnnonceCovoiturageRepository annonceCovoiturageRepository, ReservationCovoiturageRepository reservationCovoiturageRepository, ReservationCovoiturageService reservationCovoiturageService, UtilisateurRepository utilisateurRepository, AdresseDepartRepository adresseDepartRepository, AdresseArriveeRepository adresseArriveeRepository, VehiculeCovoiturageRepository vehiculeCovoiturageRepository, ListeAnnonceMapper listeAnnonceMapper){
         super();
         this.annonceCovoiturageRepository = annonceCovoiturageRepository;
         this.reservationCovoiturageRepository = reservationCovoiturageRepository;
@@ -39,6 +42,7 @@ public class AnnonceCovoiturageService {
         this.adresseDepartRepository = adresseDepartRepository;
         this.adresseArriveeRepository = adresseArriveeRepository;
         this.vehiculeCovoiturageRepository = vehiculeCovoiturageRepository;
+        this.listeAnnonceMapper = listeAnnonceMapper;
     }
 
     /**
@@ -64,12 +68,25 @@ public class AnnonceCovoiturageService {
     }
 
     /**
+     * Renvoie une liste si elle n'est pas vide, lance exception sinon
+     * @param
+     * @return List<AnnonceCovoiturage>
+     * @throws ListeVideException
+     */
+    private List<AnnonceCovoiturageDetailDto> safeReturnListDto(List<AnnonceCovoiturageDetailDto> l) throws ListeVideException {
+        if(l.isEmpty()) throw new ListeVideException("Aucune annonce covoiturage à renvoyer");
+        return l;
+    }
+
+    /**
      * Renvoie la liste de toutes les annonces de covoiturages, passées et à venir
      * @param  pr pagerequest
      * @return Liste d'annonces
      */
-    public List<AnnonceCovoiturage> listerCovoiturages(PageRequest pr) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findAll(pr).toList());
+    public List<AnnonceCovoiturageDetailDto> listerCovoiturages(PageRequest pr) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository.findAll(pr).toList()));
     }
 
     /**
@@ -145,8 +162,10 @@ public class AnnonceCovoiturageService {
      * findAll des annonces
      * @return
      */
-    public List<AnnonceCovoiturage> lister() throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findAll());
+    public List<AnnonceCovoiturageDetailDto> lister() throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository.findAll()));
     }
 
     /**
@@ -154,8 +173,10 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrga(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurId(id));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrga(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository.findByOrganisateurId(id)));
     }
 
     /**
@@ -163,10 +184,12 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaAvenir(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .findByOrganisateurIdAndDateHeureDepartGreaterThanEqual(id,
-                        LocalDate.now().atStartOfDay()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaAvenir(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .findByOrganisateurIdAndDateHeureDepartGreaterThanEqual(id,
+                                LocalDate.now().atStartOfDay())));
     }
 
     /**
@@ -174,10 +197,12 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaHisto(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .findByOrganisateurIdAndDateHeureDepartLessThan(id,
-                        LocalDate.now().atStartOfDay()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaHisto(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .findByOrganisateurIdAndDateHeureDepartLessThan(id,
+                                LocalDate.now().atStartOfDay())));
     }
 
     /**
@@ -185,11 +210,13 @@ public class AnnonceCovoiturageService {
      * @param req covoiturage : adresse départ (nullable), adresse arrivée (nullable), date (nullable)
      * @return Liste des annonces satisfaisant les critères
      */
-    public List<AnnonceCovoiturage> rechercher(ReqCovoit req) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .rechercher(req.getAdresseDepart(),
-                        req.getAdresseArrivee(),
-                        req.getDate()));
+    public List<AnnonceCovoiturageDetailDto> rechercher(ReqCovoit req) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .rechercher(req.getAdresseDepart(),
+                                req.getAdresseArrivee(),
+                                req.getDate())));
     }
 
     /**
@@ -197,9 +224,11 @@ public class AnnonceCovoiturageService {
      * @return
      * @throws ListeVideException
      */
-    public List<AnnonceCovoiturage> listerActives() throws ListeVideException{
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .findByStatutLike(Annonce.OUVERT.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerActives() throws ListeVideException{
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .findByStatutLike(Annonce.OUVERT.getVal())));
     }
 
     /**
@@ -207,9 +236,11 @@ public class AnnonceCovoiturageService {
      * @return
      * @throws ListeVideException
      */
-    public List<AnnonceCovoiturage> listerArchives() throws ListeVideException{
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .findByStatutLike(Annonce.ARCHIVE.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerArchives() throws ListeVideException{
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .findByStatutLike(Annonce.ARCHIVE.getVal())));
     }
 
     /**
@@ -217,9 +248,11 @@ public class AnnonceCovoiturageService {
      * @return
      * @throws ListeVideException
      */
-    public List<AnnonceCovoiturage> listerAnnule() throws ListeVideException{
-        return this.safeReturnList(this.annonceCovoiturageRepository
-                .findByStatutLike(Annonce.ANNULE.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnule() throws ListeVideException{
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                            .findByStatutLike(Annonce.ANNULE.getVal())));
     }
 
     /**
@@ -227,8 +260,11 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaActif(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.OUVERT.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaActif(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                                .findByOrganisateurIdAndStatutLike(id, Annonce.OUVERT.getVal())));
     }
 
     /**
@@ -236,8 +272,11 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaArchive(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.ARCHIVE.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaArchive(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                                .findByOrganisateurIdAndStatutLike(id, Annonce.ARCHIVE.getVal())));
     }
 
     /**
@@ -245,7 +284,10 @@ public class AnnonceCovoiturageService {
      * @param id
      * @return Liste des annonces
      */
-    public List<AnnonceCovoiturage> listerAnnoncesOrgaAnnule(Integer id) throws ListeVideException {
-        return this.safeReturnList(this.annonceCovoiturageRepository.findByOrganisateurIdAndStatutLike(id, Annonce.ANNULE.getVal()));
+    public List<AnnonceCovoiturageDetailDto> listerAnnoncesOrgaAnnule(Integer id) throws ListeVideException {
+        return this.safeReturnListDto(
+                this.listeAnnonceMapper.map(
+                        this.annonceCovoiturageRepository
+                                .findByOrganisateurIdAndStatutLike(id, Annonce.ANNULE.getVal())));
     }
 }

@@ -34,4 +34,5 @@ public interface AnnonceCovoiturageRepository extends JpaRepository<AnnonceCovoi
                                         @Param("date") LocalDate c);
 
     List<AnnonceCovoiturage> findByOrganisateurIdAndStatutLike(Integer id, String statut);
+
 }
