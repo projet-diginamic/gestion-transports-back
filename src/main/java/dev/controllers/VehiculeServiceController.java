@@ -2,7 +2,6 @@ package dev.controllers;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +26,6 @@ import dev.exception.NotFoundImmatriculationException;
 import dev.exception.NotFoundMarqueException;
 import dev.services.VehiculeServiceService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("vehicule-service")
 public class VehiculeServiceController {
@@ -41,8 +38,8 @@ public class VehiculeServiceController {
 	}
 
 	@GetMapping
-	public List<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start,
-																@RequestParam Integer size) throws ListeVideException {
+	public List<VehiculeServiceListeDto> listerVehiculesService(@RequestParam Integer start, @RequestParam Integer size)
+			throws ListeVideException {
 		return this.vehiculeServiceService.afficherVehiculesService(PageRequest.of(start, size));
 	}
 
@@ -59,7 +56,8 @@ public class VehiculeServiceController {
 	 * @return Liste des vehicules satisfaisant aux critères
 	 */
 	@GetMapping("collaborateur-date/{date}")
-	public List<VehiculeService> listerVehiculesCollaborateurDateLibre(@PathVariable String date) {
+	public List<VehiculeService> listerVehiculesCollaborateurDateLibre(@PathVariable String date)
+			throws ListeVideException {
 		return this.vehiculeServiceService.rechercherEnServiceDateLibre(new ReqVehiculeServiceDate(date));
 	}
 
