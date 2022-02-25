@@ -1,12 +1,11 @@
 package dev.services;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import dev.exception.*;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +62,8 @@ public class VehiculeServiceService {
 	 * @return
 	 * @throws ListeVideException
 	 */
-	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr) throws ListeVideException {
+	public List<VehiculeServiceListeDtoCollaborateur> afficherVehiculesServiceCollaborateur(PageRequest pr)
+			throws ListeVideException {
 		if (this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr).iterator().hasNext()) {
 			return this.vehiculeServiceRepository.listerVehiculesCollaborateur(pr);
 		} else {
@@ -78,12 +78,18 @@ public class VehiculeServiceService {
 	 * @param req
 	 * @return Liste des annonces satisfaisant les critères
 	 */
-	public List<VehiculeService> rechercherEnServiceDateLibre(ReqVehiculeServiceDate req) {
-		return this.vehiculeServiceRepository.rechercherEnServiceDateLibre(req.getDate());
+	public List<VehiculeService> rechercherEnServiceDateLibre(ReqVehiculeServiceDate req) throws ListeVideException {
+		if (this.vehiculeServiceRepository.rechercherEnServiceDateLibre(req.getDate()).iterator().hasNext()) {
+			return this.vehiculeServiceRepository.rechercherEnServiceDateLibre(req.getDate());
+		} else {
+			throw new ListeVideException("Actuellement, aucun véhicule disponible le "
+					+ req.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		}
 	}
 
 	/**
 	 * Méthode pour créer un nouveau véhicule de service
+	 * 
 	 * @param creerVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
@@ -121,6 +127,7 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet de modifier les informations d'un véhicule de service
+	 * 
 	 * @param modifierVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
@@ -151,7 +158,8 @@ public class VehiculeServiceService {
 				if (modifierVehiculeServiceDto.getImmatriculation().matches("^[A-Z]{2}[-][0-9]{3}[-][A-Z]{2}$")) {
 					vehiculeService.setImmatriculation(modifierVehiculeServiceDto.getImmatriculation());
 				} else {
-					throw new FormatImmatriculationException("La plaque d'immatriculation renseignée n'a pas le bon format");
+					throw new FormatImmatriculationException(
+							"La plaque d'immatriculation renseignée n'a pas le bon format");
 				}
 
 				vehiculeService.setMarque(modifierVehiculeServiceDto.getMarque());
