@@ -3,6 +3,7 @@ package dev.repositories;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import dev.utils.Resa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -41,4 +42,6 @@ public interface ReservationVehiculeRepository extends JpaRepository<Reservation
 
 	@Query("Select r from ReservationVehicule r where r.dateHeureDepart > :date and r.demandeChauffeur = true and r.chauffeur is null")
 	List<ReservationVehicule> enAttente(@Param("date") LocalDateTime now);
+
+    List<ReservationVehicule> findByPassagerIdAndStatutNotLike(Integer id, String statut);
 }

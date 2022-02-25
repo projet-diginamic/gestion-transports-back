@@ -335,4 +335,15 @@ public class ReservationVehiculeService {
 	public List<ReservationVehicule> lister() throws ListeVideException {
 		return this.safeReturnList(this.repository.findAll());
 	}
+
+	/**
+	 * Renvoie toutes les annonces ARCHIVE ET ANNULE d'un collaborateur
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+    public List<ReservationVehicule> listerMesResasAA(Integer id) throws ListeVideException {
+		return this.safeReturnList(
+				this.repository.findByPassagerIdAndStatutNotLike(id, Resa.ACTIF.getVal()));
+    }
 }
