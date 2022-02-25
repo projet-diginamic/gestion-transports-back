@@ -23,6 +23,7 @@ import dev.exception.ListeVideException;
 import dev.exception.NotFoundException;
 import dev.exception.NotFoundImmatriculationException;
 import dev.exception.NotFoundMarqueException;
+import dev.exception.NotFoundVehiculeDetailException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;
 
@@ -219,19 +220,18 @@ public class VehiculeServiceService {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public Optional<VehiculeService> detailVehiculeService(Integer id) throws NotFoundException {
+	public Optional<VehiculeService> detailVehiculeService(Integer id) throws NotFoundVehiculeDetailException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository.findById(id);
 
 		if (optionalVehiculeService.isPresent()) {
 			// véhicule trouvé
-			// VehiculeService vehiculeService = optionalVehiculeService.get();
 
 			return optionalVehiculeService;
 
 		} else {
 			// véhicule non trouvé
-			throw new NotFoundException("Véhicule non trouvé");
+			throw new NotFoundVehiculeDetailException("Véhicule non trouvé");
 		}
 
 	}

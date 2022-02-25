@@ -24,6 +24,7 @@ import dev.exception.ListeVideException;
 import dev.exception.NotFoundException;
 import dev.exception.NotFoundImmatriculationException;
 import dev.exception.NotFoundMarqueException;
+import dev.exception.NotFoundVehiculeDetailException;
 import dev.services.VehiculeServiceService;
 
 @RestController
@@ -79,7 +80,7 @@ public class VehiculeServiceController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> detailVehiculeService(@PathVariable Integer id) throws NotFoundException {
+	public ResponseEntity<?> detailVehiculeService(@PathVariable Integer id) throws NotFoundVehiculeDetailException {
 		return ResponseEntity.ok(this.vehiculeServiceService.detailVehiculeService(id));
 	};
 
