@@ -6,6 +6,7 @@ import dev.exception.ListeVideException;
 import dev.services.ReservationCovoiturageService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -126,7 +127,7 @@ public class ReservationCovoiturageController {
     }
 
     /**
-     * Renvoie la liste des resa covoiturage ACTIVEs d'un passager
+     * Renvoie la liste des resa covoiturage ARCHIVE d'un passager
      * @param id
      * @return
      * @throws ListeVideException
@@ -145,6 +146,19 @@ public class ReservationCovoiturageController {
     @GetMapping("/passager-annule/{id}")
     public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listerPassagerAnnule(@PathVariable String id) throws ListeVideException {
         return ResponseEntity.ok(this.covoiturageService.listerParUtilisateurAnnule(Integer.parseInt(id)));
+    }
+
+    /**
+     * Renvoie la liste des resa covoit ANNULE ET ARCHIVE d'un passager
+     * @param id
+     * @return
+     * @throws ListeVideException
+     */
+    @GetMapping("/passager-archive-annule/{id}")
+    public ResponseEntity<List<ReservationCovoiturageSimpleDto>> listResponsePassagerAA(@PathVariable String id) throws  ListeVideException{
+        List<ReservationCovoiturageSimpleDto> l = this.covoiturageService.listerParUtilisateurArchive(Integer.parseInt(id));
+        l.addAll(this.covoiturageService.listerParUtilisateurAnnule(Integer.parseInt(id)));
+        return ResponseEntity.ok(l);
     }
 
 }

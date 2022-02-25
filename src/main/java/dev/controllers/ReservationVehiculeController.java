@@ -94,7 +94,7 @@ public class ReservationVehiculeController {
 	}
 
 	/**
-	 * Renvoie la liste des résas passées d'un utilisateur
+	 * Renvoie la liste des résas ACTIF d'un utilisateur
 	 *
 	 * @param id
 	 * @return
@@ -105,7 +105,7 @@ public class ReservationVehiculeController {
 	}
 
 	/**
-	 * Renvoie la liste des résas passées d'un utilisateur
+	 * Renvoie la liste des résas ARCHIVE d'un utilisateur
 	 *
 	 * @param id
 	 * @return
@@ -116,7 +116,7 @@ public class ReservationVehiculeController {
 	}
 
 	/**
-	 * Renvoie la liste des résas passées d'un utilisateur
+	 * Renvoie la liste des résas ANNULE d'un utilisateur
 	 *
 	 * @param id
 	 * @return
@@ -124,6 +124,19 @@ public class ReservationVehiculeController {
 	@GetMapping("utilisateur-annule/{id}")
 	public ResponseEntity<List<ReservationVehicule>> listerMesResasAnnule(@PathVariable String id) throws ListeVideException {
 		return ResponseEntity.ok(this.service.listerMesResasAnnulees(Integer.parseInt(id)));
+	}
+
+	/**
+	 * Renvoie la liste des resas ARCHIVE ET ANNULE d'un utilisateur
+	 * @param id
+	 * @return
+	 * @throws ListeVideException
+	 */
+	@GetMapping("utilisateur-archive-annule/{id}")
+	public ResponseEntity<List<ReservationVehicule>> listerMesResasAA(@PathVariable String id) throws  ListeVideException{
+		List<ReservationVehicule> l = this.service.listerMesResasArchives(Integer.parseInt(id));
+		l.addAll(this.service.listerChauffeurAnnule(Integer.parseInt(id)));
+		return ResponseEntity.ok(l);
 	}
 
 	/**
