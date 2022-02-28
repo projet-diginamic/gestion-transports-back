@@ -2,9 +2,9 @@ package dev.controllers;
 
 import java.util.List;
 
-import dev.exception.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +20,17 @@ import dev.dto.vehiculeService.ReqVehiculeServiceDate;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.VehiculeService;
+import dev.exception.FormatImmatriculationException;
+import dev.exception.ListeVideException;
+import dev.exception.ModifVehiculeException;
+import dev.exception.NotFoundException;
+import dev.exception.NotFoundImmatriculationException;
+import dev.exception.NotFoundMarqueException;
+import dev.exception.NotFoundVehiculeDetailException;
 import dev.services.VehiculeServiceService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("vehicule-service")
 public class VehiculeServiceController {
 
