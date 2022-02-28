@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import dev.exception.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,6 @@ import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.Categorie;
 import dev.entites.VehiculeService;
-import dev.exception.FormatImmatriculationException;
-import dev.exception.ListeVideException;
-import dev.exception.NotFoundException;
-import dev.exception.NotFoundImmatriculationException;
-import dev.exception.NotFoundMarqueException;
-import dev.exception.NotFoundVehiculeDetailException;
 import dev.repositories.CategorieRepository;
 import dev.repositories.VehiculeServiceRepository;
 
@@ -128,23 +123,22 @@ public class VehiculeServiceService {
 
 	/**
 	 * Méthode qui permet de modifier les informations d'un véhicule de service
-	 * 
+	 *
 	 * @param modifierVehiculeServiceDto
 	 * @return
 	 * @throws NotFoundException
 	 * @throws FormatImmatriculationException
 	 */
 	@Transactional
-	public ResponseEntity<?> modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
-			throws NotFoundException, FormatImmatriculationException {
+	public VehiculeService modifierVehiculeService(ModifierVehiculeServiceDto modifierVehiculeServiceDto)
+			throws ModifVehiculeException, FormatImmatriculationException {
 
 		Optional<VehiculeService> optionalVehiculeService = this.vehiculeServiceRepository
 				.findById(modifierVehiculeServiceDto.getId());
 		VehiculeService vehiculeService = optionalVehiculeService.get();
 
 		if (modifierVehiculeServiceDto.getCategorie() == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
+			throw new ModifVehiculeException("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
 		}
 		Optional<Categorie> optionalCategorie = categorieRepository.findById(modifierVehiculeServiceDto.getCategorie());
 
@@ -169,18 +163,15 @@ public class VehiculeServiceService {
 				vehiculeService.setPhoto(modifierVehiculeServiceDto.getPhoto());
 				vehiculeService.setStatut(modifierVehiculeServiceDto.getStatut());
 
-				this.vehiculeServiceRepository.save(vehiculeService);
-				return ResponseEntity.ok(vehiculeService);
+				return this.vehiculeServiceRepository.save(vehiculeService);
 
 			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
+				throw new ModifVehiculeException("La catégorie " + modifierVehiculeServiceDto.getCategorie() + " n'existe pas.");
 			}
 
 		} else {
 			// véhicule non trouvé
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("Le véhicule immatriculé " + vehiculeService.getImmatriculation() + " n'existe pas.");
+			throw new ModifVehiculeException("Le véhicule immatriculé " + vehiculeService.getImmatriculation() + " n'existe pas.");
 		}
 
 	}
