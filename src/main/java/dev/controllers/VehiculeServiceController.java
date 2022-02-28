@@ -2,6 +2,7 @@ package dev.controllers;
 
 import java.util.List;
 
+import dev.exception.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,6 @@ import dev.dto.vehiculeService.ReqVehiculeServiceDate;
 import dev.dto.vehiculeService.VehiculeServiceListeDto;
 import dev.dto.vehiculeService.VehiculeServiceListeDtoCollaborateur;
 import dev.entites.VehiculeService;
-import dev.exception.FormatImmatriculationException;
-import dev.exception.ListeVideException;
-import dev.exception.NotFoundException;
-import dev.exception.NotFoundImmatriculationException;
-import dev.exception.NotFoundMarqueException;
-import dev.exception.NotFoundVehiculeDetailException;
 import dev.services.VehiculeServiceService;
 
 @RestController
@@ -69,9 +64,9 @@ public class VehiculeServiceController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> modifierVehiculeService(@RequestBody ModifierVehiculeServiceDto modifierVehiculeServiceDto)
-			throws NotFoundException, FormatImmatriculationException {
-		return ResponseEntity.ok(this.vehiculeServiceService.modifierVehiculeService(modifierVehiculeServiceDto));
+	public VehiculeService modifierVehiculeService(@RequestBody ModifierVehiculeServiceDto modifierVehiculeServiceDto)
+			throws ModifVehiculeException, FormatImmatriculationException {
+		return this.vehiculeServiceService.modifierVehiculeService(modifierVehiculeServiceDto);
 	}
 
 	@PutMapping("/archiver/{id}")

@@ -41,6 +41,12 @@ public class TransportExceptionHandler {
 		return "entité introuvable";// Voir les messages quand il y aura le temps
 	}
 
+	@ExceptionHandler(value = { ModifVehiculeException.class })
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String onModifVehiculeException(ModifVehiculeException e) {
+		return e.getMessage();
+	}
+
 	@ExceptionHandler(value = { DateDepasseeException.class })
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	public String onDateDepasseeException(DateDepasseeException e) {
